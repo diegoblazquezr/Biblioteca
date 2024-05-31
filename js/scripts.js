@@ -1,18 +1,21 @@
 const fragment = document.createDocumentFragment();
 const sectionAllListsContainer = document.querySelector('#all-lists-container');
 const sectionAllBooksContainer = document.querySelector('#all-books-container');
+const backButtonAllBooksContainer = document.querySelector('#back-button-all-books-container');
 
 const AllLists = 'https://api.nytimes.com/svc/books/v3/lists/names.json?api-key=CmHFGOrHUTetIVGxsAImRJXCHxEhTajD';
 
-sectionAllListsContainer.addEventListener('click', ({target}) => {
+sectionAllListsContainer.addEventListener('click', ({ target }) => {
     if (target.matches('#all-lists-container button')) {
         genre = target.value;
+        sectionAllListsContainer.innerHTML = '';
         getAllBooks(genre);
     }
 });
 
-sectionAllBooksContainer.addEventListener('click', ({target}) => {
+backButtonAllBooksContainer.addEventListener('click', ({ target }) => {
     if (target.matches('#back-button-all-books')) {
+        backButtonAllBooksContainer.innerHTML = '';
         sectionAllBooksContainer.innerHTML = '';
         getAllLists();
     }
@@ -71,7 +74,6 @@ const getAllBooks = async (genre) => {
 }
 
 const paintAllBooks = (arrAllBooks) => {
-    sectionAllListsContainer.innerHTML = '';
     const backButtonAllBooks = document.createElement('button');
     backButtonAllBooks.innerText = 'BACK TO INDEX';
     backButtonAllBooks.id = 'back-button-all-books';
@@ -82,7 +84,7 @@ const paintAllBooks = (arrAllBooks) => {
         const h4AllBooks = document.createElement('h4');
         h4AllBooks.innerHTML = `#${element.rank} ${element.title}`;
         const imgAllBooks = document.createElement('img');
-        imgAllBooks.src = element.book_image; 
+        imgAllBooks.src = element.book_image;
         const pAllBooksWeeks = document.createElement('p');
         pAllBooksWeeks.innerHTML = `Weeks on list: ${element.weeks_on_list}`;
         const pAllBooksDes = document.createElement('p');
@@ -92,11 +94,12 @@ const paintAllBooks = (arrAllBooks) => {
         const buttonAllBooks = document.createElement('button');
         buttonAllBooks.innerText = 'BUY AT AMAZON';
         aAllBooks.append(buttonAllBooks);
-        
+
         divAllBooks.append(h4AllBooks, imgAllBooks, pAllBooksWeeks, pAllBooksDes, aAllBooks);
         fragment.append(divAllBooks);
     });
-    sectionAllBooksContainer.append(backButtonAllBooks, fragment);
+    backButtonAllBooksContainer.append(backButtonAllBooks);
+    sectionAllBooksContainer.append(fragment);
 }
 
 getAllLists();

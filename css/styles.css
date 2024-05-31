@@ -1,5 +1,51 @@
-* {
+*, *:before, *:after {
     margin: 0;
     padding: 0;
     font-family: Arial;
+}
+
+header {
+    height: 100px;
+    margin: 30px;
+}
+
+header img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 100%;
+    padding-bottom: 10px;
+}
+
+#all-lists-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin: 30px;
+    gap: 30px;
+}
+
+#all-lists-container div {
+    height: 200px;
+    border: 1px solid black;
+}
+
+#back-button-all-books-container {
+    margin-right: 30px;
+    margin-left: 30px;
+}
+
+#all-books-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin: 30px;
+    gap: 30px;
+}
+
+#all-books-container div {
+    height: 600px;
+    border: 1px solid black;
+}
+
+#all-books-container img {
+    width: 100%;
 }
