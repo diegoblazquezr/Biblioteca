@@ -9,6 +9,9 @@ sectionAllListsContainer.addEventListener('click', ({ target }) => {
     if (target.matches('#all-lists-container button')) {
         genre = target.value;
         sectionAllListsContainer.innerHTML = '';
+        sectionAllListsContainer.className = 'hide';
+        backButtonAllBooksContainer.className = '';
+        sectionAllBooksContainer.className = '';
         getAllBooks(genre);
     }
 });
@@ -17,6 +20,9 @@ backButtonAllBooksContainer.addEventListener('click', ({ target }) => {
     if (target.matches('#back-button-all-books')) {
         backButtonAllBooksContainer.innerHTML = '';
         sectionAllBooksContainer.innerHTML = '';
+        backButtonAllBooksContainer.className = 'hide';
+        sectionAllBooksContainer.className = 'hide';
+        sectionAllListsContainer.className = '';
         getAllLists();
     }
 });
@@ -47,9 +53,9 @@ const paintAllLists = (arrAllLists) => {
         const pAllListsNewest = document.createElement('p');
         pAllListsNewest.innerText = `Newest: ${element.newest_published_date}`;
         const pAllListsUpdated = document.createElement('p');
-        pAllListsUpdated.innerText = `Updated: ${element.updated}`;
+        pAllListsUpdated.innerText = `Updated: ${element.updated.charAt(0).toUpperCase()}${element.updated.slice(1).toLowerCase()}`;
         const buttonAllLists = document.createElement('button');
-        buttonAllLists.innerText = 'READ MORE!';
+        buttonAllLists.innerText = 'READ MORE! >';
         buttonAllLists.value = element.list_name_encoded;
 
         divAllLists.append(h3AllLists, hrAllLists, pAllListsOldest, pAllListsNewest, pAllListsUpdated, buttonAllLists);
@@ -75,7 +81,7 @@ const getAllBooks = async (genre) => {
 
 const paintAllBooks = (arrAllBooks) => {
     const backButtonAllBooks = document.createElement('button');
-    backButtonAllBooks.innerText = 'BACK TO INDEX';
+    backButtonAllBooks.innerText = '< BACK TO INDEX';
     backButtonAllBooks.id = 'back-button-all-books';
     window.scrollTo(0, 0);
 
@@ -92,7 +98,7 @@ const paintAllBooks = (arrAllBooks) => {
         const aAllBooks = document.createElement('a');
         aAllBooks.href = element.amazon_product_url;
         const buttonAllBooks = document.createElement('button');
-        buttonAllBooks.innerText = 'BUY AT AMAZON';
+        buttonAllBooks.innerText = 'BUY AT AMAZON >';
         aAllBooks.append(buttonAllBooks);
 
         divAllBooks.append(h4AllBooks, imgAllBooks, pAllBooksWeeks, pAllBooksDes, aAllBooks);
