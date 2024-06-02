@@ -1,36 +1,66 @@
 * {
     margin: 0;
     padding: 0;
-    font-family: Arial;
+    font-family: Araboto; 
     color: rgb(78, 78, 78);
 }
 
-header {
-    height: 100px;
-    margin-left: 30px;
-    margin-right: 30px;
-    margin-top: 30px;
-    margin-bottom: 50px;
+@font-face {
+    font-family: Anton;
+    src: url(../assets/fonts/Anton/Anton-Regular.ttf);
 }
 
-header img {
+@font-face {
+    font-family: Araboto;
+    src: url(../assets/fonts/Araboto/Araboto\ Light\ 400.ttf);
+}
+
+header {
+    height: fit-content;
+    margin: 20px 40px 20px 40px;
+    
+}
+
+#nyt-title {
+    font-size: 2em;
+    font-weight: bold;
+    color: black;
+    display: block;
+}
+
+#nyt-title span {
+    font-size: 0.3em;
+    color: black;
+}
+
+#best-seller-title {
+    font-family: Anton;
+    font-size: 5em;
+    color: white;
+    background-color: black;
+    height: fit-content;    
+    text-align: right;
+    display: inline-block;
+    width: 60%;
+    padding: 0 20px 0 0;
+}
+
+/* header img {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    height: 100%;
     padding-bottom: 20px;
-}
+    width: 30%;
+} */
 
 header hr {
     border: 1px solid rgb(231, 231, 231);
+    margin-top: 10px;
 }
 
 #all-lists-container {
     display: grid;
-    margin-left: 30px;
-    margin-right: 30px;
-    margin-top: 0px;
-    margin-bottom: 30px;
+    margin: 0px 40px 30px 40px;
     gap: 20px;
 }
 
@@ -52,8 +82,7 @@ header hr {
 }
 
 #all-lists-container hr {
-    margin-top: 30px;
-    margin-bottom: 30px;
+    margin: 20px 0px 20px 0px;
     border: 1px solid rgb(231, 231, 231);
 }
 
@@ -63,7 +92,7 @@ header hr {
 }
 
 #all-lists-container button {
-    padding: 10px;
+    padding: 5px 15px 7px 15px;
     width: fit-content;
     border: 1px solid lightgray;
     box-shadow: 0 0 3px lightgray;
@@ -83,13 +112,18 @@ header hr {
     display: none !important;
 }
 
+#h3-all-books {
+    margin-top: 10px;
+    font-size: 2em;
+    display: block;
+}
+
 #back-button-all-books-container {
-    margin-right: 30px;
-    margin-left: 30px;
+    margin: 0px 30px 0px 30px;
 }
 
 #back-button-all-books-container button{
-    padding: 10px;
+    padding: 5px 15px 7px 15px;
     width: fit-content;
     border: 1px solid lightgray;
     box-shadow: 0 0 3px lightgray;
@@ -107,7 +141,7 @@ header hr {
 
 #all-books-container {
     display: grid;
-    margin: 30px;
+    margin: 20px 40px 20px 40px;
     gap: 20px;
 }
 
@@ -141,7 +175,7 @@ header hr {
 }
 
 #all-books-container button {
-    padding: 10px;
+    padding: 5px 15px 7px 15px;
     width: fit-content;
     border: 1px solid lightgray;
     box-shadow: 0 0 3px lightgray;
@@ -184,6 +218,7 @@ header hr {
     }
 }
 
+
 @media screen and (min-width: 992px) and (max-width: 1199px) {
     #all-lists-container {
         grid-template-columns: repeat(4, 1fr);
@@ -199,5 +234,30 @@ header hr {
     }
     #all-books-container {
         grid-template-columns: repeat(5, 1fr);
+    }
+}
+
+.loader {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border-left-color: darkblue;
+    animation: spin 1s ease infinite;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+  
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
     }
 }

@@ -1,6 +1,8 @@
 const fragment = document.createDocumentFragment();
+const loader = document.querySelector('.loader');
 const sectionAllListsContainer = document.querySelector('#all-lists-container');
 const sectionAllBooksContainer = document.querySelector('#all-books-container');
+const h3AllBooks = document.querySelector('#h3-all-books');
 const backButtonAllBooksContainer = document.querySelector('#back-button-all-books-container');
 
 const AllLists = 'https://api.nytimes.com/svc/books/v3/lists/names.json?api-key=CmHFGOrHUTetIVGxsAImRJXCHxEhTajD';
@@ -9,26 +11,30 @@ sectionAllListsContainer.addEventListener('click', ({ target }) => {
     if (target.matches('#all-lists-container button')) {
         genre = target.value;
         sectionAllListsContainer.innerHTML = '';
-        sectionAllListsContainer.className = 'hide';
-        backButtonAllBooksContainer.className = '';
-        sectionAllBooksContainer.className = '';
+        sectionAllListsContainer.classList.add('hide');
+        h3AllBooks.classList.remove('hide');
+        backButtonAllBooksContainer.classList.remove('hide');
+        sectionAllBooksContainer.classList.remove('hide');
         getAllBooks(genre);
     }
 });
 
 backButtonAllBooksContainer.addEventListener('click', ({ target }) => {
     if (target.matches('#back-button-all-books')) {
+        h3AllBooks.innerHTML = '';
+        h3AllBooks.classList.add('hide');
         backButtonAllBooksContainer.innerHTML = '';
         sectionAllBooksContainer.innerHTML = '';
-        backButtonAllBooksContainer.className = 'hide';
-        sectionAllBooksContainer.className = 'hide';
-        sectionAllListsContainer.className = '';
+        backButtonAllBooksContainer.classList.add('hide');
+        sectionAllBooksContainer.classList.add('hide');
+        sectionAllListsContainer.classList.remove('hide');
         getAllLists();
     }
 });
 
 const getAllLists = async () => {
     try {
+        loader.classList.remove('hide');
         const responseAllLists = await fetch(AllLists);
         if (responseAllLists.ok) {
             const dataAllLists = await responseAllLists.json();
@@ -43,6 +49,7 @@ const getAllLists = async () => {
 }
 
 const paintAllLists = (arrAllLists) => {
+
     arrAllLists.forEach((element) => {
         const divAllLists = document.createElement('div');
         const h3AllLists = document.createElement('h3');
@@ -62,15 +69,17 @@ const paintAllLists = (arrAllLists) => {
         fragment.append(divAllLists);
     });
     sectionAllListsContainer.append(fragment);
+    loader.classList.add('hide');
 }
 
 const getAllBooks = async (genre) => {
     try {
+        loader.classList.remove('hide');
         const responseAllBooks = await fetch(`https://api.nytimes.com/svc/books/v3/lists/current/${genre}.json?api-key=CmHFGOrHUTetIVGxsAImRJXCHxEhTajD`);
         if (responseAllBooks.ok) {
             const dataAllBooks = await responseAllBooks.json();
             const arrAllBooks = dataAllBooks.results.books;
-            return paintAllBooks(arrAllBooks);
+            return paintAllBooks(dataAllBooks, arrAllBooks);
         } else {
             throw responseAllBooks;
         }
@@ -79,11 +88,13 @@ const getAllBooks = async (genre) => {
     }
 }
 
-const paintAllBooks = (arrAllBooks) => {
+const paintAllBooks = (dataAllBooks, arrAllBooks) => {
+    
+    window.scrollTo(0, 0);
+    h3AllBooks.innerText = dataAllBooks.results.display_name;
     const backButtonAllBooks = document.createElement('button');
     backButtonAllBooks.innerText = '< BACK TO INDEX';
     backButtonAllBooks.id = 'back-button-all-books';
-    window.scrollTo(0, 0);
 
     arrAllBooks.forEach((element) => {
         const divAllBooks = document.createElement('div');
@@ -106,6 +117,7 @@ const paintAllBooks = (arrAllBooks) => {
     });
     backButtonAllBooksContainer.append(backButtonAllBooks);
     sectionAllBooksContainer.append(fragment);
+    loader.classList.add('hide');
 }
 
 getAllLists();
