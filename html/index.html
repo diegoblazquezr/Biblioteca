@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NYT Best Sellers</title>
     <link rel="stylesheet" href="../css/styles.css">
 </head>
+
 <body>
     <header>
-        <p id="nyt-title">New York Times<span id="firstPr">®</span></p>
+        <p id="nyt-title">New York Times<span>®</span></p>
         <p id="best-seller-title">Best Sellers</p>
         <!-- <img src="../assets/images/nyytbestsellers.png"> -->
         <h3 id="h3-all-books"></h3>
@@ -16,7 +18,7 @@
     </header>
 
     <main>
-        <span class="loader "></span>
+        <span class="loader hide"></span>
         <section id="all-lists-container">
 
         </section>
@@ -24,6 +26,9 @@
 
         </section>
         <section id="all-books-container">
+
+        </section>
+        <section id="pagination-container" class="hide">
 
         </section>
     </main>
@@ -34,4 +39,5 @@
 
     <script src="../js/scripts.js"></script>
 </body>
+
 </html>

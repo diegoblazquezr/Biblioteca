@@ -1,7 +1,7 @@
 * {
     margin: 0;
     padding: 0;
-    font-family: Araboto; 
+    font-family: Araboto;
     color: rgb(78, 78, 78);
 }
 
@@ -18,7 +18,7 @@
 header {
     height: fit-content;
     margin: 20px 40px 20px 40px;
-    
+
 }
 
 #nyt-title {
@@ -38,11 +38,12 @@ header {
     font-size: 5em;
     color: white;
     background-color: black;
-    height: fit-content;    
+    height: fit-content;
     text-align: right;
     display: inline-block;
     width: 60%;
     padding: 0 20px 0 0;
+    line-height: 65px;
 }
 
 /* header img {
@@ -64,11 +65,11 @@ header hr {
     gap: 20px;
 }
 
-#all-lists-container div {
+#all-lists-container article {
     /* height: 200px; */
     /* overflow: auto; */
     border: 1px solid lightgray;
-    padding: 15px;    
+    padding: 15px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -122,7 +123,7 @@ header hr {
     margin: 0px 30px 0px 30px;
 }
 
-#back-button-all-books-container button{
+#back-button-all-books-container button {
     padding: 5px 15px 7px 15px;
     width: fit-content;
     border: 1px solid lightgray;
@@ -145,7 +146,7 @@ header hr {
     gap: 20px;
 }
 
-#all-books-container div {
+#all-books-container article {
     height: fit-content;
     border: 1px solid lightgray;
     box-shadow: 0 0 3px lightgray;
@@ -191,10 +192,36 @@ header hr {
     cursor: pointer;
 }
 
+#pagination-container {
+    margin: 30px 0 40px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#pagination-container span{
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 1em;
+}
+
+#pagination-container button{
+    width: 30px;
+    height: 30px;
+    font-size: 1em;
+}
+
+#pagination-container button:hover{
+    background-color: darkblue;
+    color: white;
+    cursor: pointer;
+}
+
 @media only screen and (min-width: 320px) and (max-width: 480px) {
     #all-lists-container {
         grid-template-columns: repeat(1, 1fr);
     }
+
     #all-books-container {
         grid-template-columns: repeat(1, 1fr);
     }
@@ -204,6 +231,7 @@ header hr {
     #all-lists-container {
         grid-template-columns: repeat(2, 1fr);
     }
+
     #all-books-container {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -213,6 +241,7 @@ header hr {
     #all-lists-container {
         grid-template-columns: repeat(3, 1fr);
     }
+
     #all-books-container {
         grid-template-columns: repeat(3, 1fr);
     }
@@ -223,6 +252,7 @@ header hr {
     #all-lists-container {
         grid-template-columns: repeat(4, 1fr);
     }
+
     #all-books-container {
         grid-template-columns: repeat(4, 1fr);
     }
@@ -232,6 +262,7 @@ header hr {
     #all-lists-container {
         grid-template-columns: repeat(5, 1fr);
     }
+
     #all-books-container {
         grid-template-columns: repeat(5, 1fr);
     }
@@ -251,7 +282,7 @@ header hr {
     -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
 }
-  
+
 @keyframes spin {
     0% {
         transform: rotate(0deg);
