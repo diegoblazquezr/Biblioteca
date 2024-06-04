@@ -4,7 +4,11 @@ const sectionAllListsContainer = document.querySelector('#all-lists-container');
 const sectionAllBooksContainer = document.querySelector('#all-books-container');
 const h3AllBooks = document.querySelector('#h3-all-books');
 const backButtonAllBooksContainer = document.querySelector('#back-button-all-books-container');
+let arrAllLists = [];
+let arrAllBooks = [];
+let dataAllBooks = [];
 
+// Pagination variables
 const paginationContainer = document.querySelector('#pagination-container');
 let currentPage = 1;
 const amountPerPage = 5;
@@ -44,7 +48,9 @@ document.addEventListener('click', ({ target }) => {
         backButtonAllBooksContainer.innerHTML = '';
         sectionAllBooksContainer.innerHTML = '';
         paginationContainer.innerHTML = '';
-        getAllBooks(genre);
+        // getAllBooks(genre);
+        const arrAllBooksSliced = paginateBooks();
+        paintAllBooks(arrAllBooksSliced, dataAllBooks);
     }
 
     if (target.matches('#pagination-forward')) {
@@ -52,16 +58,31 @@ document.addEventListener('click', ({ target }) => {
         backButtonAllBooksContainer.innerHTML = '';
         sectionAllBooksContainer.innerHTML = '';
         paginationContainer.innerHTML = '';
-        getAllBooks(genre);
+        // getAllBooks(genre);
+        const arrAllBooksSliced = paginateBooks();
+        paintAllBooks(arrAllBooksSliced, dataAllBooks);
+    }
+});
+
+document.addEventListener('change', ({ target }) => {
+    if (target.matches('#select-weekly-monthly')) {
+        sectionAllListsContainer.innerHTML = '';
+        if (target.value === 'all') {
+            paintAllLists(arrAllLists);
+        } else {
+            const arrAllListsFiltered = arrAllLists.filter((obj) => obj.updated.toLowerCase() === target.value);
+            paintAllLists(arrAllListsFiltered);
+        }
     }
 });
 
 const getAllLists = async () => {
+    currentPage = 1; // Resets page pagination if back button or refreshed
     try {
         loader.classList.remove('hide');
         const responseAllLists = await fetch(AllLists);
         const dataAllLists = await responseAllLists.json();
-        const arrAllLists = dataAllLists.results;
+        arrAllLists = dataAllLists.results;
         return paintAllLists(arrAllLists);
     } catch (error) {
         throw error;
@@ -96,22 +117,23 @@ const getAllBooks = async (genre) => {
     try {
         loader.classList.remove('hide');
         const responseAllBooks = await fetch(`https://api.nytimes.com/svc/books/v3/lists/current/${genre}.json?api-key=CmHFGOrHUTetIVGxsAImRJXCHxEhTajD`);
-        const dataAllBooks = await responseAllBooks.json();
-        const arrAllBooks = dataAllBooks.results.books;
+        dataAllBooks = await responseAllBooks.json();
+        arrAllBooks = dataAllBooks.results.books;
 
-        const start = (currentPage - 1) * amountPerPage;
-        const end = start + amountPerPage;
-        const arrAllBooksSliced = arrAllBooks.slice(start, end);
+        // const start = (currentPage - 1) * amountPerPage;
+        // const end = start + amountPerPage;
+        // const arrAllBooksSliced = arrAllBooks.slice(start, end);
+        // amountOfPages = Math.ceil(arrAllBooks.length / amountPerPage);
 
-        amountOfPages = Math.ceil(arrAllBooks.length / amountPerPage);
+        const arrAllBooksSliced = paginateBooks();
 
-        return paintAllBooks(dataAllBooks, arrAllBooksSliced);
+        return paintAllBooks(arrAllBooksSliced, dataAllBooks);
     } catch (error) {
         throw error;
     }
 }
 
-const paintAllBooks = (dataAllBooks, arrAllBooksSliced) => {
+const paintAllBooks = (arr, dataAllBooks) => {
 
     window.scrollTo(0, 0);
     h3AllBooks.innerText = dataAllBooks.results.display_name;
@@ -122,7 +144,7 @@ const paintAllBooks = (dataAllBooks, arrAllBooksSliced) => {
     backButtonAllBooks.id = 'back-button-all-books';
 
     //All Books Cards Elements
-    arrAllBooksSliced.forEach(element => {
+    arr.forEach(element => {
         const articleAllBooks = document.createElement('article');
         const h4AllBooks = document.createElement('h4');
         h4AllBooks.innerHTML = `#${element.rank} ${element.title}`;
@@ -170,6 +192,14 @@ const paintAllBooks = (dataAllBooks, arrAllBooksSliced) => {
     paginationContainer.append(fragment);
 
     loader.classList.add('hide');
+}
+
+const paginateBooks = () => {
+    const start = (currentPage - 1) * amountPerPage;
+    const end = start + amountPerPage;
+    const arrAllBooksSliced = arrAllBooks.slice(start, end);
+    amountOfPages = Math.ceil(arrAllBooks.length / amountPerPage);
+    return arrAllBooksSliced;
 }
 
 getAllLists();
