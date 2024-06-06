@@ -14,6 +14,17 @@
         <p id="best-seller-title">Best Sellers</p>
         <!-- <img src="../assets/images/nyytbestsellers.png"> -->
         <h3 id="h3-all-books"></h3>
+
+        <section id="user-nav-container">
+            <article id="buttons-login-signup-container">
+                <button id='login-window'>Login</button>
+                <button id="signup-window">Signup</button>
+            </article>
+            <article id="logout-container">
+                <p id="message"></p>
+                <button id="button-logout">Logout</button>
+            </article>
+        </section>
         <hr>
     </header>
 
@@ -29,31 +40,48 @@
             </select>
         </section>
 
-        <section id="filters-all-books-container">
+        <section id="filters-all-books-container"></section>
 
+        <section id="auth-container">
+            <article id="login-container">
+                <form id="formLogin" action="#" method="POST">
+                    <label for="emailLogin">Email:</label><br>
+                    <input type="email" id="emailLogin" name="emailLogin" placeholder="Introduce email..."><br>
+                    <label for="passLogin">Password:</label><br>
+                    <input type="password" id="passLogin" name="passLogin" placeholder="Introduce password..."><br>
+                    <input type="submit" value="Enviar">
+                </form>
+            </article>
+            <article id="signup-container">
+                <form id="formSignup" action="#" method="POST">
+                    <label for="emailSignup">Email:</label><br>
+                    <input type="email" id="emailSignup" name="emailSignup" placeholder="Introduce email..."><br>
+                    <label for="passSignup">Password:</label><br>
+                    <input type="password" id="passSignup" name="passSignup" placeholder="Introduce password..."><br>
+                    <label for="passSignupRepeat">Repite password:</label><br>
+                    <input type="password" id="passSignupRepeat" name="passSignupRepeat"
+                        placeholder="Repeat password..."><br>
+                    <input type="submit" value="Enviar">
+                </form>
+            </article>
         </section>
 
-        <section id="all-lists-container">
+        <section id="all-lists-container"></section>
 
-        </section>
+        <section id="back-button-all-books-container"></section>
 
-        <section id="back-button-all-books-container">
+        <section id="all-books-container"></section>
 
-        </section>
-
-        <section id="all-books-container">
-
-        </section>
-
-        <section id="pagination-container" class="hide">
-
-        </section>
+        <section id="pagination-container" class="hide"></section>
     </main>
 
     <footer>
 
     </footer>
 
+    <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-auth.js"></script>
     <script src="../js/scripts.js"></script>
 </body>
 

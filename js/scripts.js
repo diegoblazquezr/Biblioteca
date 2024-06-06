@@ -1,3 +1,15 @@
+const firebaseConfig = {
+    apiKey: "AIzaSyDxuD7QmrPJqD2Flgyeuh-vBHF9KN24vio",
+    authDomain: "bibliotecanyt-1f6ea.firebaseapp.com",
+    projectId: "bibliotecanyt-1f6ea",
+    storageBucket: "bibliotecanyt-1f6ea.appspot.com",
+    messagingSenderId: "415595570695",
+    appId: "1:415595570695:web:273f9a8e00e2598b78eca2"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
 const fragment = document.createDocumentFragment();
 const loader = document.querySelector('.loader');
 const sectionAllListsContainer = document.querySelector('#all-lists-container');
@@ -7,6 +19,10 @@ const backButtonAllBooksContainer = document.querySelector('#back-button-all-boo
 let arrAllLists = [];
 let arrAllBooks = [];
 let dataAllBooks = [];
+
+let isUserLogged;
+
+const authContainer = document.querySelector('#auth-container');
 
 // Pagination variables
 const paginationContainer = document.querySelector('#pagination-container');
@@ -28,6 +44,7 @@ document.addEventListener('click', ({ target }) => {
         sectionAllBooksContainer.classList.remove('hide');
         paginationContainer.innerHTML = '';
         paginationContainer.classList.remove('hide');
+        authContainer.classList.add('hide');
         getAllBooks(genre);
     }
 
@@ -40,6 +57,7 @@ document.addEventListener('click', ({ target }) => {
         sectionAllBooksContainer.classList.add('hide');
         sectionAllListsContainer.classList.remove('hide');
         paginationContainer.classList.add('hide');
+        authContainer.classList.remove('hide');
         getAllLists();
     }
 
@@ -62,12 +80,44 @@ document.addEventListener('click', ({ target }) => {
         const arrAllBooksSliced = paginateBooks();
         paintAllBooks(arrAllBooksSliced, dataAllBooks);
     }
+
+    if (target.matches('#btnFavorite')) {
+        if (isUserLogged) {
+            // console.log(isUserLogged.uid);
+            // console.log(target.value);
+            const foundBook = arrAllBooks.find((element) => element.title === target.value);
+            createBook(foundBook);
+        } else {
+            console.log('logeate brother');
+        }
+    }
 });
 
+// Event listener user auth
 document.addEventListener('change', ({ target }) => {
     if (target.matches('#select-weekly-monthly')) {
         filterWeeklyMonthly(target);
     }
+});
+
+document.getElementById("formLogin").addEventListener("submit", function (event) {
+    event.preventDefault();
+    let emailLogin = event.target.elements.emailLogin.value;
+    let passLogin = event.target.elements.passLogin.value;
+    signInUser(emailLogin, passLogin)
+});
+
+document.getElementById("formSignup").addEventListener("submit", function (event) {
+    event.preventDefault();
+    let emailSignup = event.target.elements.emailSignup.value;
+    let passSignup = event.target.elements.passSignup.value;
+    let passSignupRepeat = event.target.elements.passSignupRepeat.value;
+
+    passSignup === passSignupRepeat ? signUpUser(emailSignup, passSignup) : alert("error password");
+});
+
+document.getElementById("button-logout").addEventListener("click", () => {
+    signOut();
 });
 
 const getAllLists = async () => {
@@ -153,8 +203,14 @@ const paintAllBooks = (arr, dataAllBooks) => {
         const buttonAllBooks = document.createElement('button');
         buttonAllBooks.innerText = 'BUY AT AMAZON >';
         aAllBooks.append(buttonAllBooks);
+        const btnFavorite = document.createElement('BUTTON');
+        btnFavorite.id = 'btnFavorite';
+        // btnFavorite.classList.add('hide');
+        btnFavorite.innerText = '<3';
+        btnFavorite.value = element.title;
 
-        articleAllBooks.append(h4AllBooks, imgAllBooks, pAllBooksWeeks, pAllBooksDes, aAllBooks);
+
+        articleAllBooks.append(h4AllBooks, imgAllBooks, pAllBooksWeeks, pAllBooksDes, aAllBooks, btnFavorite);
         fragment.append(articleAllBooks);
     });
     backButtonAllBooksContainer.append(backButtonAllBooks);
@@ -192,15 +248,13 @@ const paintAllBooks = (arr, dataAllBooks) => {
 
 const filterWeeklyMonthly = (target) => {
     sectionAllListsContainer.innerHTML = '';
-        if (target.value === 'all') {
-            paintAllLists(arrAllLists);
-        } else {
-            const arrAllListsFiltered = arrAllLists.filter((obj) => obj.updated.toLowerCase() === target.value);
-            paintAllLists(arrAllListsFiltered);
-        }
+    if (target.value === 'all') {
+        paintAllLists(arrAllLists);
+    } else {
+        const arrAllListsFiltered = arrAllLists.filter((obj) => obj.updated.toLowerCase() === target.value);
+        paintAllLists(arrAllListsFiltered);
+    }
 }
-
-
 
 const paginateBooks = () => {
     const start = (currentPage - 1) * amountPerPage;
@@ -209,5 +263,109 @@ const paginateBooks = () => {
     amountOfPages = Math.ceil(arrAllBooks.length / amountPerPage);
     return arrAllBooksSliced;
 }
+
+// Functions User Auth
+
+const signInUser = (email, password) => {
+    firebase.auth().signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+            let user = userCredential.user;
+            console.log(`se ha logado ${user.email} ID:${user.uid}`)
+            alert(`se ha logado ${user.email} ID:${user.uid}`)
+            console.log("USER", user);
+        })
+        .catch((error) => {
+            let errorCode = error.code;
+            let errorMessage = error.message;
+            console.log(errorCode)
+            console.log(errorMessage)
+        });
+}
+
+const createUser = (user) => {
+    // Create a document reference with the user ID as the document ID
+    db.collection("users")
+        .doc(user.id)  // This sets the document ID to the user's UID
+        .set(user)  // Use set to create the document with the provided data
+        .then(() => {
+            console.log("Document written with ID: ", user.id);
+        })
+        .catch((error) => {
+            console.error("Error adding document: ", error);
+        });
+};
+
+
+const createBook = (foundBook) => {
+    const user = firebase.auth().currentUser; // IT ONLY WORKS INSIDE HERE DONT KNOW WHY :(
+    // console.log(user);
+    if (user) {
+        db.collection("users").doc(user.uid).collection("favorites")
+          .add(foundBook)
+          .then(docRef => {
+              console.log("Favorite book added with ID: ", docRef.id);
+              alert("Book added to favorites!");
+          })
+          .catch(error => {
+              console.error("Error adding favorite book: ", error);
+              alert("Failed to add book to favorites.");
+          });
+    } else {
+        console.log("No user is logged in to add a favorite book.");
+        alert("You need to be logged in to add favorites.");
+    }
+}
+
+const signUpUser = (email, password) => {
+    firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+            let user = userCredential.user;
+            console.log(`se ha registrado ${user.email} ID:${user.uid}`);
+            alert(`se ha registrado ${user.email} ID:${user.uid}`);
+            createUser({
+                id: user.uid,
+                email: user.email
+            });
+
+        })
+        .catch((error) => {
+            console.log("Error en el sistema" + error.message, "Error: " + error.code);
+        });
+}
+
+const signOut = () => {
+    let user = firebase.auth().currentUser;
+
+    firebase.auth().signOut().then(() => {
+        console.log("Sale del sistema: " + user.email);
+    }).catch((error) => {
+        console.log("hubo un error: " + error);
+    });
+}
+
+firebase.auth().onAuthStateChanged(function (user) {
+    if (user) {
+        console.log(`Está en el sistema:${user.email} ${user.uid}`);
+        document.getElementById("message").innerText = `Está en el sistema: ${user.uid}`;
+        document.querySelector('#login-window').classList.add('hide');
+        document.querySelector('#signup-window').classList.add('hide');
+        document.querySelector('#button-logout').classList.remove('hide');
+        // document.querySelector('#btnFavorite').classList.remove('hide');
+        isUserLogged = user;
+        console.log(isUserLogged);
+    } else {
+        console.log("no hay usuarios en el sistema");
+        document.getElementById("message").innerText = `No hay usuarios en el sistema`;
+        document.querySelector('#login-window').classList.remove('hide');
+        document.querySelector('#signup-window').classList.remove('hide');
+        document.querySelector('#button-logout').classList.add('hide');
+        // document.querySelector('#btnFavorite').classList.add('hide');
+        isUserLogged = user;
+        console.log(isUserLogged);
+
+    }
+});
 
 getAllLists();
