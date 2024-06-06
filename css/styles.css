@@ -58,14 +58,14 @@ header hr {
     margin-top: 10px;
 }
 
-#filters-container {
+#filters-all-lists-container {
     margin: 20px 40px 20px 40px;
     /* display: flex;
     align-items: center;
     justify-content: center; */
 }
 
-#filters-container select option{
+#filters-all-lists-container select option{
     padding: 2px;
 }
 

@@ -66,13 +66,7 @@ document.addEventListener('click', ({ target }) => {
 
 document.addEventListener('change', ({ target }) => {
     if (target.matches('#select-weekly-monthly')) {
-        sectionAllListsContainer.innerHTML = '';
-        if (target.value === 'all') {
-            paintAllLists(arrAllLists);
-        } else {
-            const arrAllListsFiltered = arrAllLists.filter((obj) => obj.updated.toLowerCase() === target.value);
-            paintAllLists(arrAllListsFiltered);
-        }
+        filterWeeklyMonthly(target);
     }
 });
 
@@ -193,6 +187,20 @@ const paintAllBooks = (arr, dataAllBooks) => {
 
     loader.classList.add('hide');
 }
+
+// Filters Functions
+
+const filterWeeklyMonthly = (target) => {
+    sectionAllListsContainer.innerHTML = '';
+        if (target.value === 'all') {
+            paintAllLists(arrAllLists);
+        } else {
+            const arrAllListsFiltered = arrAllLists.filter((obj) => obj.updated.toLowerCase() === target.value);
+            paintAllLists(arrAllListsFiltered);
+        }
+}
+
+
 
 const paginateBooks = () => {
     const start = (currentPage - 1) * amountPerPage;
