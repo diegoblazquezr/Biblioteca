@@ -19,6 +19,7 @@ const backButtonAllBooksContainer = document.querySelector('#back-button-all-boo
 let arrAllLists = [];
 let arrAllBooks = [];
 let dataAllBooks = [];
+let arrFavorites = [];
 
 let isUserLogged;
 
@@ -58,6 +59,7 @@ document.addEventListener('click', ({ target }) => {
         sectionAllListsContainer.classList.remove('hide');
         paginationContainer.classList.add('hide');
         authContainer.classList.remove('hide');
+        readAllFavoriteBooks(isUserLogged);
         getAllLists();
     }
 
@@ -81,14 +83,12 @@ document.addEventListener('click', ({ target }) => {
         paintAllBooks(arrAllBooksSliced, dataAllBooks);
     }
 
-    if (target.matches('#btnFavorite')) {
+    if (target.matches('.btnFavorite, .btnFavoriteActive')) {
         if (isUserLogged) {
-            // console.log(isUserLogged.uid);
-            // console.log(target.value);
-            const foundBook = arrAllBooks.find((element) => element.title === target.value);
-            createBook(foundBook);
+            const bookTitle = target.value;
+            toggleFavoriteBook(bookTitle, target);
         } else {
-            console.log('logeate brother');
+            alert('logeate brother');
         }
     }
 });
@@ -202,13 +202,17 @@ const paintAllBooks = (arr, dataAllBooks) => {
         aAllBooks.href = element.amazon_product_url;
         const buttonAllBooks = document.createElement('button');
         buttonAllBooks.innerText = 'BUY AT AMAZON >';
+        buttonAllBooks.className = 'btnAmazon';
         aAllBooks.append(buttonAllBooks);
         const btnFavorite = document.createElement('BUTTON');
-        btnFavorite.id = 'btnFavorite';
+        if (arrFavorites.includes(element.title)) {
+            btnFavorite.classList.add('btnFavoriteActive');
+        } else {
+            btnFavorite.classList.add('btnFavorite');
+        }
         // btnFavorite.classList.add('hide');
         btnFavorite.innerText = '<3';
         btnFavorite.value = element.title;
-
 
         articleAllBooks.append(h4AllBooks, imgAllBooks, pAllBooksWeeks, pAllBooksDes, aAllBooks, btnFavorite);
         fragment.append(articleAllBooks);
@@ -233,7 +237,7 @@ const paintAllBooks = (arr, dataAllBooks) => {
     }
 
     if (currentPage === amountOfPages) {
-        buttonPaginationForward.setAttribute('disabled', true)
+        buttonPaginationForward.setAttribute('disabled', true);
     } else {
         buttonPaginationForward.removeAttribute('disabled');
     }
@@ -295,25 +299,72 @@ const createUser = (user) => {
         });
 };
 
-
 const createBook = (foundBook) => {
-    const user = firebase.auth().currentUser; // IT ONLY WORKS INSIDE HERE DONT KNOW WHY :(
+    // const user = firebase.auth().currentUser; // IT ONLY WORKS INSIDE HERE DONT KNOW WHY :(
     // console.log(user);
-    if (user) {
-        db.collection("users").doc(user.uid).collection("favorites")
-          .add(foundBook)
-          .then(docRef => {
-              console.log("Favorite book added with ID: ", docRef.id);
-              alert("Book added to favorites!");
-          })
-          .catch(error => {
-              console.error("Error adding favorite book: ", error);
-              alert("Failed to add book to favorites.");
-          });
+    if (isUserLogged) {
+        db.collection("users")
+            .doc(isUserLogged.uid)
+            .collection("favorites")
+            .add(foundBook)
+            .then(docRef => {
+                console.log("Favorite book added with ID: ", docRef.id);
+                alert("Book added to favorites!");
+            })
+            .catch(error => {
+                console.error("Error adding favorite book: ", error);
+                alert("Failed to add book to favorites.");
+            });
     } else {
         console.log("No user is logged in to add a favorite book.");
         alert("You need to be logged in to add favorites.");
     }
+}
+
+const toggleFavoriteBook = async (bookTitle, target) => {
+    const userRef = db.collection('users').doc(isUserLogged.uid);
+    const favoritesRef = userRef.collection('favorites');
+    const query = favoritesRef.where('title', '==', bookTitle);
+
+    try {
+        const snapshot = await query.get();
+        // readAllFavoriteBooks();
+        if (snapshot.empty) {
+            // No favorite found, add new
+            const foundBook = arrAllBooks.find(element => element.title === bookTitle);
+            createBook(foundBook);
+            target.classList.remove('btnFavorite');
+            target.classList.add('btnFavoriteActive');
+        } else {
+            // Favorite found, delete it
+            snapshot.forEach(doc => {
+                doc.ref.delete();
+                console.log(`${bookTitle} deleted from favorites`);
+                alert(`${bookTitle} deleted from favorites`);
+            });
+            target.classList.remove('btnFavoriteActive');
+            target.classList.add('btnFavorite');
+        }
+    } catch (error) {
+        console.error("Error toggling favorite book: ", error);
+        alert("Failed to toggle favorite status for the book.");
+    }
+}
+
+const readAllFavoriteBooks = (isUserLogged) => {
+    isUserLogged = firebase.auth().currentUser;
+    db.collection("users")
+        .doc(isUserLogged.uid)
+        .collection('favorites')
+        .get()
+        .then((querySnapshot) => {
+            arrFavorites = [];
+            querySnapshot.forEach((doc) => {
+                arrFavorites.push(doc.data().title);
+                console.log(arrFavorites);
+            });
+        })
+        .catch(() => console.log('Error reading documents'));
 }
 
 const signUpUser = (email, password) => {
@@ -353,7 +404,8 @@ firebase.auth().onAuthStateChanged(function (user) {
         document.querySelector('#signup-window').classList.add('hide');
         document.querySelector('#button-logout').classList.remove('hide');
         // document.querySelector('#btnFavorite').classList.remove('hide');
-        isUserLogged = user;
+        isUserLogged = firebase.auth().currentUser;
+        readAllFavoriteBooks(isUserLogged);
         console.log(isUserLogged);
     } else {
         console.log("no hay usuarios en el sistema");
@@ -362,7 +414,7 @@ firebase.auth().onAuthStateChanged(function (user) {
         document.querySelector('#signup-window').classList.remove('hide');
         document.querySelector('#button-logout').classList.add('hide');
         // document.querySelector('#btnFavorite').classList.add('hide');
-        isUserLogged = user;
+        isUserLogged = firebase.auth().currentUser;
         console.log(isUserLogged);
 
     }
