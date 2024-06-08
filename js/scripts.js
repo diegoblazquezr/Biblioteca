@@ -238,7 +238,7 @@ const paintAllBooks = (arrBooks, dataAllBooks) => {
             btnFavorite.classList.add('btnFavorite');
         }
         // btnFavorite.classList.add('hide');
-        btnFavorite.innerHTML = '<i class="fa-solid fa-heart" style="color: #000000;"></i>';
+        btnFavorite.innerHTML = '<i class="fa-regular fa-heart" style="color: #000000;"></i>';
         btnFavorite.value = element.title;
 
         articleAllBooks.append(h4AllBooks, imgAllBooks, pAllBooksWeeks, pAllBooksDes, aAllBooks, btnFavorite);
@@ -259,14 +259,21 @@ const paintAllBooks = (arrBooks, dataAllBooks) => {
 
     if (currentPage === 1) {
         buttonPaginationBack.setAttribute('disabled', true);
+        buttonPaginationBack.classList.add('buttonDisabled');
     } else {
         buttonPaginationBack.removeAttribute('disabled');
+        buttonPaginationBack.classList.remove('buttonDisabled');
+
     }
 
     if (currentPage === amountOfPages) {
         buttonPaginationForward.setAttribute('disabled', true);
+        buttonPaginationForward.classList.add('buttonDisabled');
+
     } else {
         buttonPaginationForward.removeAttribute('disabled');
+        buttonPaginationForward.classList.remove('buttonDisabled');
+
     }
 
     fragment.append(buttonPaginationBack, spanPaginationPages, buttonPaginationForward);

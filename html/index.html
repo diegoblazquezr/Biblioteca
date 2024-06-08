@@ -6,17 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NYT Best Sellers</title>
     <link rel="stylesheet" href="../css/styles.css">
-    
+
 </head>
 
 <body>
     <header>
-        <p id="nyt-title">New York Times<span>®</span></p>
-        <p id="best-seller-title">Best Sellers</p>
-        <!-- <img src="../assets/images/nyytbestsellers.png"> -->
-        <h3 id="h3-all-books"></h3>
+        <!-- <p id="nyt-title">New York Times<span>®</span></p>
+        <p id="best-seller-title">Best Sellers</p> -->
+        <section id="nytContainer">
+            <img src="../assets/images/nyytbestsellers.png">
+        </section>
 
-        <section id="user-nav-container">
+        <section id="userNavContainer">
             <article id="loggedOffContainer">
                 <button id='login-window'>Login</button>
                 <button id="signup-window">Signup</button>
@@ -27,7 +28,7 @@
                     <p id="message"></p>
                 </div>
                 <label for="btnFilePfp">Change your profile picture:</label><br>
-                <input type="file" id="btnFilePfp" name="btnFilePfp" accept="image/png, image/jpeg"/>
+                <input type="file" id="btnFilePfp" name="btnFilePfp" accept="image/png, image/jpeg" />
                 <button id="btnFavorites">Favorites</button>
                 <button id="button-logout">Logout</button>
             </article>
@@ -37,6 +38,8 @@
 
     <main>
         <span class="loader hide"></span>
+
+        <h3 id="h3-all-books"></h3>
 
         <section id="filters-all-lists-container">
             <label for="select-weekly-monthly">Updated: </label>
