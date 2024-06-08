@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NYT Best Sellers</title>
     <link rel="stylesheet" href="../css/styles.css">
+    
 </head>
 
 <body>
@@ -16,12 +17,18 @@
         <h3 id="h3-all-books"></h3>
 
         <section id="user-nav-container">
-            <article id="buttons-login-signup-container">
+            <article id="loggedOffContainer">
                 <button id='login-window'>Login</button>
                 <button id="signup-window">Signup</button>
             </article>
-            <article id="logout-container">
-                <p id="message"></p>
+            <article id="loggedInContainer">
+                <div id="pfpMessageContainer">
+                    <div id="profilePictureContainer"></div>
+                    <p id="message"></p>
+                </div>
+                <label for="btnFilePfp">Change your profile picture:</label><br>
+                <input type="file" id="btnFilePfp" name="btnFilePfp" accept="image/png, image/jpeg"/>
+                <button id="btnFavorites">Favorites</button>
                 <button id="button-logout">Logout</button>
             </article>
         </section>
@@ -40,7 +47,9 @@
             </select>
         </section>
 
-        <section id="filters-all-books-container"></section>
+        <section id="filters-all-books-container">
+
+        </section>
 
         <section id="auth-container">
             <article id="login-container">
@@ -49,19 +58,21 @@
                     <input type="email" id="emailLogin" name="emailLogin" placeholder="Introduce email..."><br>
                     <label for="passLogin">Password:</label><br>
                     <input type="password" id="passLogin" name="passLogin" placeholder="Introduce password..."><br>
-                    <input type="submit" value="Enviar">
+                    <input type="submit" value="Login">
                 </form>
             </article>
             <article id="signup-container">
                 <form id="formSignup" action="#" method="POST">
+                    <label for="nameSignup">Name:</label><br>
+                    <input type="text" id="nameSignup" name="nameSignup" placeholder="Introduce a name..."><br>
                     <label for="emailSignup">Email:</label><br>
-                    <input type="email" id="emailSignup" name="emailSignup" placeholder="Introduce email..."><br>
+                    <input type="email" id="emailSignup" name="emailSignup" placeholder="Introduce an email..."><br>
                     <label for="passSignup">Password:</label><br>
-                    <input type="password" id="passSignup" name="passSignup" placeholder="Introduce password..."><br>
-                    <label for="passSignupRepeat">Repite password:</label><br>
+                    <input type="password" id="passSignup" name="passSignup" placeholder="Introduce a password..."><br>
+                    <label for="passSignupRepeat">Repeat password:</label><br>
                     <input type="password" id="passSignupRepeat" name="passSignupRepeat"
                         placeholder="Repeat password..."><br>
-                    <input type="submit" value="Enviar">
+                    <input type="submit" value="Signup">
                 </form>
             </article>
         </section>
@@ -76,12 +87,20 @@
     </main>
 
     <footer>
-
+        <section>
+            <span id="dby">Developed by</span>
+            <span id="name">Diego Blázquez Rosado</span>
+            <a href="https://github.com/diegoblazquezr/Biblioteca" target="_blank">
+                <i class="fa-brands fa-github fa-xl" style="color: #ffffff;"></i>
+            </a>
+        </section>
     </footer>
 
+    <script src="https://kit.fontawesome.com/84340c7e8d.js" crossorigin="anonymous"></script>
     <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-storage.js"></script>
     <script src="../js/scripts.js"></script>
 </body>
 

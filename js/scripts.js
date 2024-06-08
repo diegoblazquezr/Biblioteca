@@ -19,11 +19,12 @@ const backButtonAllBooksContainer = document.querySelector('#back-button-all-boo
 let arrAllLists = [];
 let arrAllBooks = [];
 let dataAllBooks = [];
-let arrFavorites = [];
-
-let isUserLogged;
+let arrAllFavorites = [];
+let arrFavoritesTitles = [];
 
 const authContainer = document.querySelector('#auth-container');
+let isUserLogged;
+const profilePictureContainer = document.querySelector('#profilePictureContainer');
 
 // Pagination variables
 const paginationContainer = document.querySelector('#pagination-container');
@@ -59,7 +60,7 @@ document.addEventListener('click', ({ target }) => {
         sectionAllListsContainer.classList.remove('hide');
         paginationContainer.classList.add('hide');
         authContainer.classList.remove('hide');
-        readAllFavoriteBooks(isUserLogged);
+        readAllFavoriteBooks();
         getAllLists();
     }
 
@@ -70,6 +71,7 @@ document.addEventListener('click', ({ target }) => {
         paginationContainer.innerHTML = '';
         // getAllBooks(genre);
         const arrAllBooksSliced = paginateBooks();
+        readAllFavoriteBooks();
         paintAllBooks(arrAllBooksSliced, dataAllBooks);
     }
 
@@ -80,6 +82,7 @@ document.addEventListener('click', ({ target }) => {
         paginationContainer.innerHTML = '';
         // getAllBooks(genre);
         const arrAllBooksSliced = paginateBooks();
+        readAllFavoriteBooks();
         paintAllBooks(arrAllBooksSliced, dataAllBooks);
     }
 
@@ -91,13 +94,31 @@ document.addEventListener('click', ({ target }) => {
             alert('logeate brother');
         }
     }
+
+    if (target.matches('#btnFavorites')) {
+        sectionAllListsContainer.innerHTML = '';
+        backButtonAllBooksContainer.innerHTML = '';
+        sectionAllBooksContainer.innerHTML = '';
+        paginationContainer.innerHTML = '';
+        paginationContainer.classList.add('hide');
+        readAllFavoriteBooks();
+        paintAllBooks(arrAllFavorites);
+        sectionAllBooksContainer.classList.remove('hide');
+    }
+
 });
 
 // Event listener user auth
 document.addEventListener('change', ({ target }) => {
+
     if (target.matches('#select-weekly-monthly')) {
         filterWeeklyMonthly(target);
     }
+
+    if (target.matches('#btnFilePfp')) {
+        uploadProfilePicture();
+    }
+
 });
 
 document.getElementById("formLogin").addEventListener("submit", function (event) {
@@ -109,11 +130,12 @@ document.getElementById("formLogin").addEventListener("submit", function (event)
 
 document.getElementById("formSignup").addEventListener("submit", function (event) {
     event.preventDefault();
+    let nameSignup = event.target.elements.nameSignup.value;
     let emailSignup = event.target.elements.emailSignup.value;
     let passSignup = event.target.elements.passSignup.value;
     let passSignupRepeat = event.target.elements.passSignupRepeat.value;
 
-    passSignup === passSignupRepeat ? signUpUser(emailSignup, passSignup) : alert("error password");
+    passSignup === passSignupRepeat ? signUpUser(nameSignup, emailSignup, passSignup) : alert("error password");
 });
 
 document.getElementById("button-logout").addEventListener("click", () => {
@@ -147,7 +169,7 @@ const paintAllLists = (arrAllLists) => {
         const pAllListsUpdated = document.createElement('p');
         pAllListsUpdated.innerText = `Updated: ${element.updated.charAt(0).toUpperCase()}${element.updated.slice(1).toLowerCase()}`;
         const buttonAllLists = document.createElement('button');
-        buttonAllLists.innerText = 'READ MORE! >';
+        buttonAllLists.innerHTML = 'READ MORE! <i class="fa-solid fa-angle-right" style="color: #000000;"></i>';
         buttonAllLists.value = element.list_name_encoded;
 
         articleAllLists.append(h3AllLists, hrAllLists, pAllListsOldest, pAllListsNewest, pAllListsUpdated, buttonAllLists);
@@ -177,18 +199,22 @@ const getAllBooks = async (genre) => {
     }
 }
 
-const paintAllBooks = (arr, dataAllBooks) => {
+const paintAllBooks = (arrBooks, dataAllBooks) => {
 
     window.scrollTo(0, 0);
-    h3AllBooks.innerText = dataAllBooks.results.display_name;
+    if (dataAllBooks) {
+        h3AllBooks.innerText = dataAllBooks.results.display_name;
+    } else {
+        h3AllBooks.innerText = `Favorites`;
+    }
 
     //Return back to All Lists Button
     const backButtonAllBooks = document.createElement('button');
-    backButtonAllBooks.innerText = '< BACK TO INDEX';
+    backButtonAllBooks.innerHTML = '<i class="fa-solid fa-angle-left" style="color: #000000;"></i> BACK TO INDEX';
     backButtonAllBooks.id = 'back-button-all-books';
 
     //All Books Cards Elements
-    arr.forEach(element => {
+    arrBooks.forEach(element => {
         const articleAllBooks = document.createElement('article');
         const h4AllBooks = document.createElement('h4');
         h4AllBooks.innerHTML = `#${element.rank} ${element.title}`;
@@ -200,18 +226,19 @@ const paintAllBooks = (arr, dataAllBooks) => {
         pAllBooksDes.innerHTML = element.description;
         const aAllBooks = document.createElement('a');
         aAllBooks.href = element.amazon_product_url;
+        aAllBooks.classList.add('anchorAmzn');
         const buttonAllBooks = document.createElement('button');
-        buttonAllBooks.innerText = 'BUY AT AMAZON >';
+        buttonAllBooks.innerHTML = 'Buy at Amazon <i class="fa-brands fa-amazon fa-lg" style="color: #000000;"></i>';
         buttonAllBooks.className = 'btnAmazon';
         aAllBooks.append(buttonAllBooks);
         const btnFavorite = document.createElement('BUTTON');
-        if (arrFavorites.includes(element.title)) {
+        if (arrFavoritesTitles.includes(element.title)) {
             btnFavorite.classList.add('btnFavoriteActive');
         } else {
             btnFavorite.classList.add('btnFavorite');
         }
         // btnFavorite.classList.add('hide');
-        btnFavorite.innerText = '<3';
+        btnFavorite.innerHTML = '<i class="fa-solid fa-heart" style="color: #000000;"></i>';
         btnFavorite.value = element.title;
 
         articleAllBooks.append(h4AllBooks, imgAllBooks, pAllBooksWeeks, pAllBooksDes, aAllBooks, btnFavorite);
@@ -223,12 +250,12 @@ const paintAllBooks = (arr, dataAllBooks) => {
     //Pagination Elements
     const buttonPaginationBack = document.createElement('button');
     buttonPaginationBack.id = 'pagination-back';
-    buttonPaginationBack.innerText = '<';
+    buttonPaginationBack.innerHTML = '<i class="fa-solid fa-angle-left" style="color: #000000;"></i>';
     const spanPaginationPages = document.createElement('span');
     spanPaginationPages.innerText = `${currentPage} of ${amountOfPages}`;
     const buttonPaginationForward = document.createElement('button');
     buttonPaginationForward.id = 'pagination-forward';
-    buttonPaginationForward.innerText = '>';
+    buttonPaginationForward.innerHTML = '<i class="fa-solid fa-angle-right" style="color: #000000;"></i>';
 
     if (currentPage === 1) {
         buttonPaginationBack.setAttribute('disabled', true);
@@ -248,8 +275,7 @@ const paintAllBooks = (arr, dataAllBooks) => {
     loader.classList.add('hide');
 }
 
-// Filters Functions
-
+// Categories Filters
 const filterWeeklyMonthly = (target) => {
     sectionAllListsContainer.innerHTML = '';
     if (target.value === 'all') {
@@ -260,6 +286,7 @@ const filterWeeklyMonthly = (target) => {
     }
 }
 
+// Books Filters
 const paginateBooks = () => {
     const start = (currentPage - 1) * amountPerPage;
     const end = start + amountPerPage;
@@ -268,8 +295,7 @@ const paginateBooks = () => {
     return arrAllBooksSliced;
 }
 
-// Functions User Auth
-
+// User Authentication
 const signInUser = (email, password) => {
     firebase.auth().signInWithEmailAndPassword(email, password)
         .then((userCredential) => {
@@ -297,9 +323,76 @@ const createUser = (user) => {
         .catch((error) => {
             console.error("Error adding document: ", error);
         });
-};
+}
 
-const createBook = (foundBook) => {
+const signUpUser = (nameSignup, email, password) => {
+    firebase.auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+            let user = userCredential.user;
+            console.log(`se ha registrado ${user.email} ID:${user.uid}`);
+            alert(`se ha registrado ${user.email} ID:${user.uid}`);
+            createUser({
+                id: user.uid,
+                name: nameSignup,
+                email: user.email,
+                profilePicture: 'https://firebasestorage.googleapis.com/v0/b/bibliotecanyt-1f6ea.appspot.com/o/profilePictures%2FprofilePicture.jpg?alt=media&token=dff82b2d-411b-42db-b049-178617b40a5f'
+            });
+            user.updateProfile({
+                displayName: nameSignup
+            });
+        })
+        .catch((error) => {
+            console.log("Error en el sistema" + error.message, "Error: " + error.code);
+        });
+}
+
+const signOut = () => {
+    let user = firebase.auth().currentUser;
+
+    firebase.auth().signOut().then(() => {
+        console.log("Sale del sistema: " + user.email);
+    }).catch((error) => {
+        console.log("hubo un error: " + error);
+    });
+}
+
+firebase.auth().onAuthStateChanged(function (user) {
+    if (user) {
+        isUserLogged = firebase.auth().currentUser;
+        console.log(isUserLogged);
+        console.log(`Está en el sistema:${user.email} ${user.uid}`);
+        document.getElementById("message").innerText = `Hello ${user.displayName}!`;
+        document.querySelector('#loggedOffContainer').classList.add('hide');
+        document.querySelector('#loggedInContainer').classList.remove('hide');
+        // document.querySelector('#login-window').classList.add('hide');
+        // document.querySelector('#signup-window').classList.add('hide');
+        // document.querySelector('#button-logout').classList.remove('hide');
+        // document.querySelector('#btnFavorites').classList.remove('hide');
+        profilePictureContainer.innerHTML = '';
+        getProfilePicture();
+        readAllFavoriteBooks();
+        console.log(isUserLogged);
+    } else {
+        isUserLogged = firebase.auth().currentUser;
+        console.log("no hay usuarios en el sistema");
+        document.getElementById("message").innerText = `No hay usuarios en el sistema`;
+        document.querySelector('#loggedOffContainer').classList.remove('hide');
+        document.querySelector('#loggedInContainer').classList.add('hide');
+        // document.querySelector('#login-window').classList.remove('hide');
+        // document.querySelector('#signup-window').classList.remove('hide');
+        // document.querySelector('#button-logout').classList.add('hide');
+        // document.querySelector('#btnFavorites').classList.add('hide');
+        profilePictureContainer.innerHTML = '';
+        // getProfilePicture();
+        console.log(isUserLogged);
+
+    }
+});
+
+
+// Favorite Books
+const createFavoriteBook = (foundBook) => {
     // const user = firebase.auth().currentUser; // IT ONLY WORKS INSIDE HERE DONT KNOW WHY :(
     // console.log(user);
     if (isUserLogged) {
@@ -328,11 +421,11 @@ const toggleFavoriteBook = async (bookTitle, target) => {
 
     try {
         const snapshot = await query.get();
-        // readAllFavoriteBooks();
+        readAllFavoriteBooks();
         if (snapshot.empty) {
             // No favorite found, add new
             const foundBook = arrAllBooks.find(element => element.title === bookTitle);
-            createBook(foundBook);
+            createFavoriteBook(foundBook);
             target.classList.remove('btnFavorite');
             target.classList.add('btnFavoriteActive');
         } else {
@@ -351,73 +444,73 @@ const toggleFavoriteBook = async (bookTitle, target) => {
     }
 }
 
-const readAllFavoriteBooks = (isUserLogged) => {
+const readAllFavoriteBooks = () => {
     isUserLogged = firebase.auth().currentUser;
     db.collection("users")
         .doc(isUserLogged.uid)
         .collection('favorites')
         .get()
         .then((querySnapshot) => {
-            arrFavorites = [];
+            arrAllFavorites = [];
+            arrFavoritesTitles = [];
             querySnapshot.forEach((doc) => {
-                arrFavorites.push(doc.data().title);
-                console.log(arrFavorites);
+                arrFavoritesTitles.push(doc.data().title);
+                arrAllFavorites.push(doc.data());
+                // console.log(arrFavoritesTitles);
             });
         })
         .catch(() => console.log('Error reading documents'));
 }
 
-const signUpUser = (email, password) => {
-    firebase
-        .auth()
-        .createUserWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-            let user = userCredential.user;
-            console.log(`se ha registrado ${user.email} ID:${user.uid}`);
-            alert(`se ha registrado ${user.email} ID:${user.uid}`);
-            createUser({
-                id: user.uid,
-                email: user.email
-            });
+// Profile Picture
 
-        })
-        .catch((error) => {
-            console.log("Error en el sistema" + error.message, "Error: " + error.code);
+const uploadProfilePicture = () => {
+    const file = document.querySelector('#btnFilePfp').files[0];
+    const storageRef = firebase.storage().ref();
+    var profilePicRef = storageRef.child(`profilePictures/${isUserLogged.uid}profilePicture.jpg`);
+
+    // Upload the file
+    profilePicRef.put(file).then(function (snapshot) {
+        // Get the download URL
+        snapshot.ref.getDownloadURL().then(function (downloadURL) {
+            // Save the download URL in Firestore
+            db.collection('users')
+                .doc(isUserLogged.uid)
+                .set({
+                    profilePicture: downloadURL
+                }, { merge: true }).then(function () {
+                    console.log('Profile picture URL saved successfully!');
+                    getProfilePicture();
+                }).catch(function (error) {
+                    console.error('Error saving profile picture URL: ', error);
+                });
         });
-}
-
-const signOut = () => {
-    let user = firebase.auth().currentUser;
-
-    firebase.auth().signOut().then(() => {
-        console.log("Sale del sistema: " + user.email);
-    }).catch((error) => {
-        console.log("hubo un error: " + error);
+    }).catch(function (error) {
+        console.error('Error uploading profile picture: ', error);
     });
 }
 
-firebase.auth().onAuthStateChanged(function (user) {
-    if (user) {
-        console.log(`Está en el sistema:${user.email} ${user.uid}`);
-        document.getElementById("message").innerText = `Está en el sistema: ${user.uid}`;
-        document.querySelector('#login-window').classList.add('hide');
-        document.querySelector('#signup-window').classList.add('hide');
-        document.querySelector('#button-logout').classList.remove('hide');
-        // document.querySelector('#btnFavorite').classList.remove('hide');
-        isUserLogged = firebase.auth().currentUser;
-        readAllFavoriteBooks(isUserLogged);
-        console.log(isUserLogged);
-    } else {
-        console.log("no hay usuarios en el sistema");
-        document.getElementById("message").innerText = `No hay usuarios en el sistema`;
-        document.querySelector('#login-window').classList.remove('hide');
-        document.querySelector('#signup-window').classList.remove('hide');
-        document.querySelector('#button-logout').classList.add('hide');
-        // document.querySelector('#btnFavorite').classList.add('hide');
-        isUserLogged = firebase.auth().currentUser;
-        console.log(isUserLogged);
-
-    }
-});
+const getProfilePicture = () => {
+    isUserLogged = firebase.auth().currentUser;
+    db.collection('users')
+        .doc(isUserLogged.uid)
+        .get()
+        .then(function (doc) {
+            if (doc.exists) {
+                const urlProfilePicture = doc.data().profilePicture;
+                if (urlProfilePicture) {
+                    profilePictureContainer.innerHTML = '';
+                    const imgProfilePicture = document.createElement('IMG');
+                    imgProfilePicture.id = 'imgProfilePicture';
+                    imgProfilePicture.src = `${urlProfilePicture}`;
+                    profilePictureContainer.append(imgProfilePicture);
+                }
+            } else {
+                console.log('No such document!');
+            }
+        }).catch(function (error) {
+            console.log('Error getting document:', error);
+        });
+}
 
 getAllLists();
