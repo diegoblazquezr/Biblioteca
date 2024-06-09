@@ -6,10 +6,10 @@ const firebaseConfig = {
     messagingSenderId: "415595570695",
     appId: "1:415595570695:web:273f9a8e00e2598b78eca2"
 };
-
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
+// General Variables
 const fragment = document.createDocumentFragment();
 const loader = document.querySelector('.loader');
 const sectionAllListsContainer = document.querySelector('#all-lists-container');
@@ -22,11 +22,23 @@ let dataAllBooks = [];
 let arrAllFavorites = [];
 let arrFavoritesTitles = [];
 
-const authContainer = document.querySelector('#auth-container');
+// Auth User Variables
 let isUserLogged;
 const profilePictureContainer = document.querySelector('#profilePictureContainer');
+const loginContainer = document.querySelector('#login-container');
+const signupContainer = document.querySelector('#signup-container');
+const authContainer = document.querySelector('#auth-container');
+const closeAuthWindow = document.querySelector('.close-auth-window');
 
-// Pagination variables
+// Filters All Lists Variables
+const filtersAllListsContainer = document.querySelector('#filters-all-lists-container');
+let arrFilteredByUpdate = [];
+let arrFilteredBySearch = [];
+let arrFilteredByOldest = [];
+let arrFilteredByNewest = [];
+let arrFilteredByAlphab = [];
+
+// Pagination Variables
 const paginationContainer = document.querySelector('#pagination-container');
 let currentPage = 1;
 const amountPerPage = 5;
@@ -46,7 +58,7 @@ document.addEventListener('click', ({ target }) => {
         sectionAllBooksContainer.classList.remove('hide');
         paginationContainer.innerHTML = '';
         paginationContainer.classList.remove('hide');
-        authContainer.classList.add('hide');
+        // authContainer.classList.add('hide');
         getAllBooks(genre);
     }
 
@@ -59,7 +71,7 @@ document.addEventListener('click', ({ target }) => {
         sectionAllBooksContainer.classList.add('hide');
         sectionAllListsContainer.classList.remove('hide');
         paginationContainer.classList.add('hide');
-        authContainer.classList.remove('hide');
+        // authContainer.classList.remove('hide');
         readAllFavoriteBooks();
         getAllLists();
     }
@@ -86,12 +98,31 @@ document.addEventListener('click', ({ target }) => {
         paintAllBooks(arrAllBooksSliced, dataAllBooks);
     }
 
+    if (target.matches('#login-window')) {
+        authContainer.classList.add('show');
+        signupContainer.classList.add('hide');
+        loginContainer.classList.remove('hide');
+    }
+
+    if (target.matches('#signup-window')) {
+        authContainer.classList.add('show');
+        loginContainer.classList.add('hide');
+        signupContainer.classList.remove('hide');
+    }
+
+    if (target.matches('.close-auth-window')) {
+        authContainer.classList.remove('show');
+    }
+
     if (target.matches('.btnFavorite, .btnFavoriteActive')) {
         if (isUserLogged) {
             const bookTitle = target.value;
             toggleFavoriteBook(bookTitle, target);
         } else {
-            alert('logeate brother');
+            console.log('logeate brother');
+            authContainer.classList.add('show');
+            signupContainer.classList.add('hide');
+            loginContainer.classList.remove('hide');
         }
     }
 
@@ -99,28 +130,51 @@ document.addEventListener('click', ({ target }) => {
         sectionAllListsContainer.innerHTML = '';
         backButtonAllBooksContainer.innerHTML = '';
         sectionAllBooksContainer.innerHTML = '';
+        sectionAllBooksContainer.classList.add('hide');
         paginationContainer.innerHTML = '';
         paginationContainer.classList.add('hide');
         readAllFavoriteBooks();
         paintAllBooks(arrAllFavorites);
+        h3AllBooks.classList.remove('hide');
         sectionAllBooksContainer.classList.remove('hide');
+        backButtonAllBooksContainer.classList.remove('hide');
     }
 
 });
 
-// Event listener user auth
 document.addEventListener('change', ({ target }) => {
-
-    if (target.matches('#select-weekly-monthly')) {
-        filterWeeklyMonthly(target);
-    }
 
     if (target.matches('#btnFilePfp')) {
         uploadProfilePicture();
     }
 
+    if (target.matches('#select-weekly-monthly')) {
+        filterWeeklyMonthly(target);
+    }
+
+    if (target.matches('#oldestSelect')) {
+        filterOldest(target);
+    }
+
+    if (target.matches('#newestSelect')) {
+        filterNewest(target);
+    }
+
+    if (target.matches('#alphabSelect')) {
+        filterAlphab(target);
+    }
+
 });
 
+document.addEventListener('input', ({ target }) => {
+
+    if (target.matches('#inputSearch')) {
+        filterSearch(target);
+    }
+
+});
+
+// Event listener user auth
 document.getElementById("formLogin").addEventListener("submit", function (event) {
     event.preventDefault();
     let emailLogin = event.target.elements.emailLogin.value;
@@ -142,7 +196,93 @@ document.getElementById("button-logout").addEventListener("click", () => {
     signOut();
 });
 
+// Categories Filters
+const filterWeeklyMonthly = (target) => {
+    arrFilteredByUpdate = target.value === 'all' ? arrAllLists : arrAllLists.filter(obj => obj.updated.toLowerCase() === target.value);
+    combineAllListsFilters();
+}
+
+const filterSearch = (target) => {
+    arrFilteredBySearch = arrAllLists.filter(obj => obj.list_name.toLowerCase().includes(target.value.toLowerCase()));
+    combineAllListsFilters();
+}
+
+const filterOldest = (target) => {
+    if (target.value === 'ascending') {
+        arrFilteredByOldest = arrAllLists.sort((a, b) => {
+            const dateA = new Date(a.oldest_published_date).getTime();
+            const dateB = new Date(b.oldest_published_date).getTime();
+            return dateA - dateB;
+        });
+    } else if (target.value === 'descending') {
+        arrFilteredByOldest = arrAllLists.sort((a, b) => {
+            const dateA = new Date(a.oldest_published_date).getTime();
+            const dateB = new Date(b.oldest_published_date).getTime();
+            return dateB - dateA;
+        });
+    }
+    combineAllListsFilters();
+}
+
+const filterNewest = (target) => {
+    if (target.value === 'ascending') {
+        arrFilteredByNewest = arrAllLists.sort((a, b) => {
+            const dateA = new Date(a.newest_published_date).getTime();
+            const dateB = new Date(b.newest_published_date).getTime();
+            return dateA - dateB;
+        });
+    } else if (target.value === 'descending') {
+        arrFilteredByNewest = arrAllLists.sort((a, b) => {
+            const dateA = new Date(a.newest_published_date).getTime();
+            const dateB = new Date(b.newest_published_date).getTime();
+            return dateB - dateA;
+        });
+    }
+    combineAllListsFilters();
+}
+
+const filterAlphab = (target) => {
+    if (target.value === 'az') {
+        arrFilteredByAlphab = arrAllLists.sort((a, b) => a.list_name.localeCompare(b.list_name));
+    } else if (target.value === 'za') {
+        arrFilteredByAlphab = arrAllLists.sort((a, b) => b.list_name.localeCompare(a.list_name));
+    }
+    combineAllListsFilters();
+}
+
+const combineAllListsFilters = () => {
+    let combinedResults = arrAllLists;
+
+    if (arrFilteredByUpdate.length > 0) {
+        combinedResults = combinedResults.filter(obj => arrFilteredByUpdate.includes(obj));
+    }
+    if (arrFilteredBySearch.length > 0) {
+        combinedResults = combinedResults.filter(obj => arrFilteredBySearch.includes(obj));
+    }
+    if (arrFilteredByOldest.length > 0) {
+        combinedResults = combinedResults.filter(obj => arrFilteredByOldest.includes(obj));
+    }
+    if (arrFilteredByNewest.length > 0) {
+        combinedResults = combinedResults.filter(obj => arrFilteredByNewest.includes(obj));
+    }
+    if (arrFilteredByAlphab.length > 0) {
+        combinedResults = combinedResults.filter(obj => arrFilteredByAlphab.includes(obj));
+    }
+    paintAllLists(combinedResults);
+}
+
+// Books Filters
+const paginateBooks = () => {
+    const start = (currentPage - 1) * amountPerPage;
+    const end = start + amountPerPage;
+    const arrAllBooksSliced = arrAllBooks.slice(start, end);
+    amountOfPages = Math.ceil(arrAllBooks.length / amountPerPage);
+    return arrAllBooksSliced;
+}
+
+// All Lists
 const getAllLists = async () => {
+    filtersAllListsContainer.classList.remove('hide');
     currentPage = 1; // Resets page pagination if back button or refreshed
     try {
         loader.classList.remove('hide');
@@ -156,7 +296,7 @@ const getAllLists = async () => {
 }
 
 const paintAllLists = (arrAllLists) => {
-
+    sectionAllListsContainer.innerHTML = '';
     arrAllLists.forEach(element => {
         const articleAllLists = document.createElement('article');
         const h3AllLists = document.createElement('h3');
@@ -179,7 +319,9 @@ const paintAllLists = (arrAllLists) => {
     loader.classList.add('hide');
 }
 
+//All Books
 const getAllBooks = async (genre) => {
+    filtersAllListsContainer.classList.add('hide');
     try {
         loader.classList.remove('hide');
         const responseAllBooks = await fetch(`https://api.nytimes.com/svc/books/v3/lists/current/${genre}.json?api-key=CmHFGOrHUTetIVGxsAImRJXCHxEhTajD`);
@@ -282,26 +424,6 @@ const paintAllBooks = (arrBooks, dataAllBooks) => {
     loader.classList.add('hide');
 }
 
-// Categories Filters
-const filterWeeklyMonthly = (target) => {
-    sectionAllListsContainer.innerHTML = '';
-    if (target.value === 'all') {
-        paintAllLists(arrAllLists);
-    } else {
-        const arrAllListsFiltered = arrAllLists.filter((obj) => obj.updated.toLowerCase() === target.value);
-        paintAllLists(arrAllListsFiltered);
-    }
-}
-
-// Books Filters
-const paginateBooks = () => {
-    const start = (currentPage - 1) * amountPerPage;
-    const end = start + amountPerPage;
-    const arrAllBooksSliced = arrAllBooks.slice(start, end);
-    amountOfPages = Math.ceil(arrAllBooks.length / amountPerPage);
-    return arrAllBooksSliced;
-}
-
 // User Authentication
 const signInUser = (email, password) => {
     firebase.auth().signInWithEmailAndPassword(email, password)
@@ -317,6 +439,7 @@ const signInUser = (email, password) => {
             console.log(errorCode)
             console.log(errorMessage)
         });
+    authContainer.classList.remove('show');
 }
 
 const createUser = (user) => {
@@ -348,6 +471,7 @@ const signUpUser = (nameSignup, email, password) => {
             user.updateProfile({
                 displayName: nameSignup
             });
+            authContainer.classList.remove('show');
         })
         .catch((error) => {
             console.log("Error en el sistema" + error.message, "Error: " + error.code);
@@ -369,13 +493,9 @@ firebase.auth().onAuthStateChanged(function (user) {
         isUserLogged = firebase.auth().currentUser;
         console.log(isUserLogged);
         console.log(`Está en el sistema:${user.email} ${user.uid}`);
-        document.getElementById("message").innerText = `Hello ${user.displayName}!`;
+        document.getElementById("message").innerText = `Hello ${isUserLogged.displayName}!`;
         document.querySelector('#loggedOffContainer').classList.add('hide');
         document.querySelector('#loggedInContainer').classList.remove('hide');
-        // document.querySelector('#login-window').classList.add('hide');
-        // document.querySelector('#signup-window').classList.add('hide');
-        // document.querySelector('#button-logout').classList.remove('hide');
-        // document.querySelector('#btnFavorites').classList.remove('hide');
         profilePictureContainer.innerHTML = '';
         getProfilePicture();
         readAllFavoriteBooks();
@@ -386,14 +506,9 @@ firebase.auth().onAuthStateChanged(function (user) {
         document.getElementById("message").innerText = `No hay usuarios en el sistema`;
         document.querySelector('#loggedOffContainer').classList.remove('hide');
         document.querySelector('#loggedInContainer').classList.add('hide');
-        // document.querySelector('#login-window').classList.remove('hide');
-        // document.querySelector('#signup-window').classList.remove('hide');
-        // document.querySelector('#button-logout').classList.add('hide');
-        // document.querySelector('#btnFavorites').classList.add('hide');
         profilePictureContainer.innerHTML = '';
         // getProfilePicture();
         console.log(isUserLogged);
-
     }
 });
 
@@ -470,7 +585,6 @@ const readAllFavoriteBooks = () => {
 }
 
 // Profile Picture
-
 const uploadProfilePicture = () => {
     const file = document.querySelector('#btnFilePfp').files[0];
     const storageRef = firebase.storage().ref();

@@ -5,6 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NYT Best Sellers</title>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/nyt-favicon-package/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/nyt-favicon-package/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/nyt-favicon-package/favicon-16x16.png">
+    <link rel="manifest" href="../assets/images/nyt-favicon-package/site.webmanifest">
+    <link rel="mask-icon" href="../assets/images/nyt-favicon-package/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#000000">
+
     <link rel="stylesheet" href="../css/styles.css">
 
 </head>
@@ -24,11 +33,13 @@
             </article>
             <article id="loggedInContainer">
                 <div id="pfpMessageContainer">
-                    <div id="profilePictureContainer"></div>
+                    <label for="btnFilePfp" id="labelPfp">
+                        <div id="profilePictureContainer"></div>
+                    </label>
+                    <input type="file" id="btnFilePfp" name="btnFilePfp" accept="image/png, image/jpeg"
+                        style="display:none" />
                     <p id="message"></p>
                 </div>
-                <label for="btnFilePfp">Change your profile picture:</label><br>
-                <input type="file" id="btnFilePfp" name="btnFilePfp" accept="image/png, image/jpeg" />
                 <button id="btnFavorites">Favorites</button>
                 <button id="button-logout">Logout</button>
             </article>
@@ -39,52 +50,82 @@
     <main>
         <span class="loader hide"></span>
 
-        <h3 id="h3-all-books"></h3>
+        <section id="auth-container">
+            <article id="login-container">
+                <button class="close-auth-window"><i class="fa-solid fa-xmark" style="color: #000000;"></i></button>
+                <form id="formLogin" action="#" method="POST">
+                    <label for="emailLogin">Email:</label>
+                    <input type="email" id="emailLogin" name="emailLogin" placeholder="Introduce email...">
+                    <label for="passLogin">Password:</label>
+                    <input type="password" id="passLogin" name="passLogin" placeholder="Introduce password...">
+                    <input type="submit" value="Login">
+                </form>
+            </article>
+            <article id="signup-container">
+                <button class="close-auth-window"><i class="fa-solid fa-xmark" style="color: #000000;"></i></button>
+                <form id="formSignup" action="#" method="POST">
+                    <label for="nameSignup">Name:</label>
+                    <input type="text" id="nameSignup" name="nameSignup" placeholder="Introduce a name...">
+                    <label for="emailSignup">Email:</label>
+                    <input type="email" id="emailSignup" name="emailSignup" placeholder="Introduce an email...">
+                    <label for="passSignup">Password:</label>
+                    <input type="password" id="passSignup" name="passSignup" placeholder="Introduce a password...">
+                    <label for="passSignupRepeat">Repeat password:</label>
+                    <input type="password" id="passSignupRepeat" name="passSignupRepeat"
+                        placeholder="Repeat password...">
+                    <input type="submit" value="Signup">
+                </form>
+            </article>
+        </section>
+
+
 
         <section id="filters-all-lists-container">
-            <label for="select-weekly-monthly">Updated: </label>
-            <select name="select-weekly-monthly" id="select-weekly-monthly">
-                <option value="all">All</option>
-                <option value="weekly">Weekly</option>
-                <option value="monthly">Monthly</option>
-            </select>
+            <article>
+                <label for="select-weekly-monthly">Updated: </label>
+                <select name="select-weekly-monthly" id="select-weekly-monthly">
+                    <option value="all">All</option>
+                    <option value="weekly">Weekly</option>
+                    <option value="monthly">Monthly</option>
+                </select>
+            </article>
+            <article>
+                <label for="inputSearch">Search:</label>
+                <input type="text" id="inputSearch" name="inputSearch" placeholder="Search category...">
+            </article>
+            <article>
+                <label for="oldestSelect">Oldest: </label>
+                <select name="oldestSelect" id="oldestSelect">
+                    <option value="ascending">Ascending</option>
+                    <option value="descending">Descending</option>
+                </select>
+            </article>
+            <article>
+                <label for="newestSelect">Newest: </label>
+                <select name="newestSelect" id="newestSelect">
+                    <option value="ascending">Ascending</option>
+                    <option value="descending">Descending</option>
+                </select>
+            </article>
+            <article>
+                <label for="alphabSelect">Alphabetical: </label>
+                <select name="alphabSelect" id="alphabSelect">
+                    <option value="az">A-Z</option>
+                    <option value="za">Z-A</option>
+                </select>
+            </article>
         </section>
 
         <section id="filters-all-books-container">
 
         </section>
 
-        <section id="auth-container">
-            <article id="login-container">
-                <form id="formLogin" action="#" method="POST">
-                    <label for="emailLogin">Email:</label><br>
-                    <input type="email" id="emailLogin" name="emailLogin" placeholder="Introduce email..."><br>
-                    <label for="passLogin">Password:</label><br>
-                    <input type="password" id="passLogin" name="passLogin" placeholder="Introduce password..."><br>
-                    <input type="submit" value="Login">
-                </form>
-            </article>
-            <article id="signup-container">
-                <form id="formSignup" action="#" method="POST">
-                    <label for="nameSignup">Name:</label><br>
-                    <input type="text" id="nameSignup" name="nameSignup" placeholder="Introduce a name..."><br>
-                    <label for="emailSignup">Email:</label><br>
-                    <input type="email" id="emailSignup" name="emailSignup" placeholder="Introduce an email..."><br>
-                    <label for="passSignup">Password:</label><br>
-                    <input type="password" id="passSignup" name="passSignup" placeholder="Introduce a password..."><br>
-                    <label for="passSignupRepeat">Repeat password:</label><br>
-                    <input type="password" id="passSignupRepeat" name="passSignupRepeat"
-                        placeholder="Repeat password..."><br>
-                    <input type="submit" value="Signup">
-                </form>
-            </article>
-        </section>
-
         <section id="all-lists-container"></section>
 
         <section id="back-button-all-books-container"></section>
 
-        <section id="all-books-container"></section>
+        <h3 id="h3-all-books" class="hide"></h3>
+        <section id="all-books-container" class="hide"></section>
 
         <section id="pagination-container" class="hide"></section>
     </main>
