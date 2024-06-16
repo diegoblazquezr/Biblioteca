@@ -1,11 +1,11 @@
 @font-face {
     font-family: Anton;
-    src: url(./assets/fonts/Anton/Anton-Regular.ttf);
+    src: url(./assets/fonts/anton/anton-regular.ttf);
 }
 
 @font-face {
     font-family: Araboto;
-    src: url(./assets/fonts/Araboto/Araboto\ Light\ 400.ttf);
+    src: url(./assets/fonts/araboto/araboto\ light\ 400.ttf);
 }
 
 * {
