@@ -22,5 +22,5 @@ Esta aplicación proporciona una experiencia completa y personalizada para los a
 ## Cómo utilizar el proyecto
 
 Página principal:
-![Screenshot1](./assets/readme/home.png)
+![sc1](./assets/readme/sc1.png)
 
