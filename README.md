@@ -74,4 +74,10 @@ Gestión de Perfil
 ![sc12](./assets/readme/sc12.png)
 
 ## Tecnologías usadas
-
+- HTML5
+- CSS3
+- JavaScript
+- NYT Books API
+- Firebase
+- Fontawesome
+- Google Fonts
