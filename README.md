@@ -32,7 +32,7 @@ Visualización de Libros por Categoría
 Filtros de Categorías
 1) Justo encima de las categorías podrás encontrar los filtros.
 2) Se puede filtrar por: frecuencia de actualizado, búsqueda por texto/palabra, ordenar por fecha antigua/nueva de manera ascendete/descendente y por órden alfabético.
-3) Selecciona los filtros que desees y la lista de libros se actualizará automáticamente para mostrar los resultados que coinciden con tus criterios.
+3) Selecciona los filtros que desees y la lista de libros se actualizará automáticamente para mostrar los resultados que coinciden con tus criterios.<br>
 ![sc2](./assets/readme/sc2.png)
 
 Paginación de Libros
@@ -72,7 +72,7 @@ Gestión de Perfil
 1) Inicia sesión en tu cuenta y en la esquina superior derecha.
 2) Haz clic en la imagen de perfil.
 ![sc11](./assets/readme/sc11.png)
-4) Busca la foto de perfil por la que desees y haz click en Abrir.
+4) Busca la foto de perfil por la que desees y haz click en Abrir.<br>
 ![sc12](./assets/readme/sc12.png)
 
 ## Tecnologías usadas
