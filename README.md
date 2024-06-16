@@ -19,42 +19,56 @@ Esta aplicación web permite a los usuarios explorar los best sellers del New Yo
 
 Esta aplicación proporciona una experiencia completa y personalizada para los amantes de los libros, facilitando la exploración y adquisición de las obras más populares según el New York Times.
 
-## Cómo utilizar el proyecto
-
-Página principal:
-![sc1](./assets/readme/sc1.png)
+## Cómo utilizar la aplicación
 
 Visualización de Libros por Categoría
-1) Navega al menú principal y selecciona la opción "Categorías".
-2) Escoge la categoría que deseas explorar, por ejemplo, "Ficción" o "No Ficción".
+1) En la página principal aparecerán las categorías de los libros.
+2) Escoge la categoría que deseas explorar.
 3) La aplicación mostrará una lista de los libros más vendidos en la categoría seleccionada.
+![sc1](./assets/readme/sc1.png)
 
 Filtros de Categorías
-1) En la página de la categoría seleccionada, busca la sección de filtros.
-2) Utiliza los filtros disponibles, como autor, fecha de publicación, y calificaciones, para refinar tu búsqueda.
-3) Aplica los filtros y la lista de libros se actualizará automáticamente para mostrar los resultados que coinciden con tus criterios.
+1) Justo encima de las categorías podrás encontrar los filtros.
+2) Se puede filtrar por: frecuencia de actualizado, búsqueda por texto/palabra, ordenar por fecha antigua/nueva de manera ascendete/descendente y por órden alfabético.
+3) Selecciona los filtros que desees y la lista de libros se actualizará automáticamente para mostrar los resultados que coinciden con tus criterios.
+![sc2](./assets/readme/sc2.png)
 
 Paginación de Libros
 1) En la lista de libros, desplázate hacia la parte inferior de la página.
 2) Usa los controles de paginación para moverte entre las diferentes páginas de libros disponibles.
 3) Haz clic en el número de página o en los botones de "Siguiente" y "Anterior" para navegar por la lista.
+![sc3](./assets/readme/sc3.png)
 
 Compra en Amazon
 1) En la lista de libros, identifica el libro que deseas comprar.
 2) Haz clic en el botón "Comprar en Amazon" junto al libro seleccionado.
 3) Serás redirigido a la página de Amazon donde puedes completar la compra.
+![sc4](./assets/readme/sc4.png)
 
 Creación de Usuario
-1) Navega a la sección de registro en el menú principal.
+1) Navega a la sección de registro en la esquina superior derecha y haz click en botón Signup.
+![sc5](./assets/readme/sc5.png)
 2) Completa el formulario de registro con tu información personal.
-3) Haz clic en "Registrar" para crear tu cuenta.
+3) Haz clic en el botón azul "Signup" para crear tu cuenta.
+![sc6](./assets/readme/sc6.png)
+
+Inicio de Sesión
+1) En caso de ya disponer de una cuenta, navegar a la esquina superior derecha y hacer click en el botón Login.
+![sc7](./assets/readme/sc7.png)
+2) Completa el formulario de login con la información de tu cuenta.
+3) Haz clic en el botón azul "Login" para iniciar sesión en tu cuenta.
+![sc8](./assets/readme/sc8.png)
 
 Guardado de Libro en Favoritos
-1) Inicia sesión en tu cuenta.
-2) En la lista de libros, haz clic en el ícono de corazón junto al libro que deseas guardar como favorito.
+1) Para poder empezar a guardar favoritos necesitaras iniciar sesión en tu cuenta.
+2) Una vez dentro, en la lista de libros, haz clic en el ícono de corazón junto al libro que deseas guardar como favorito.
+![sc9](./assets/readme/sc9.png)
 3) Accede a la sección de "Favoritos" en tu perfil para ver todos los libros guardados.
 
 Gestión de Perfil
-1) Inicia sesión en tu cuenta y navega a tu perfil.
+1) Inicia sesión en tu cuenta y en la esquina superior derecha.
 2) Haz clic en "Editar Perfil".
 3) Actualiza tu foto de perfil y cualquier otra información personal, luego guarda los cambios.
+
+## Tecnologías usadas
+
