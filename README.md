@@ -68,9 +68,9 @@ Guardado de Libro en Favoritos
 
 Gestión de Perfil
 1) Inicia sesión en tu cuenta y en la esquina superior derecha.
-2) Haz clic en "Editar Perfil".
+2) Haz clic en la imagen de perfil.
 ![sc11](./assets/readme/sc11.png)
-4) Actualiza tu foto de perfil y cualquier otra información personal, luego guarda los cambios.
+4) Busca la foto de perfil por la que desees y haz click en Abrir.
 ![sc12](./assets/readme/sc12.png)
 
 ## Tecnologías usadas
