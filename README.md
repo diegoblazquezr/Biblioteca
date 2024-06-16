@@ -1,4 +1,4 @@
-![Diagrama Entidad-Relación](/assets/readme/nyytbestsellerswbg.png)
+![Diagrama Entidad-Relación](./assets/readme/nyytbestsellerswbg.png)
 # Biblioteca / NYT Best Sellers
 
 Esta aplicación web permite a los usuarios explorar los best sellers del New York Times categorizados por categoría. Las características principales incluyen:
@@ -22,5 +22,5 @@ Esta aplicación proporciona una experiencia completa y personalizada para los a
 ## Cómo utilizar el proyecto
 
 Página principal:
-![Diagrama Entidad-Relación](/assets/readme/home.png)
+![Diagrama Entidad-Relación](./assets/readme/home.png)
 
