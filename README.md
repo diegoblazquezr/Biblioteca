@@ -19,7 +19,7 @@ Esta aplicación web permite a los usuarios explorar los best sellers del New Yo
 
 Esta aplicación proporciona una experiencia completa y personalizada para los amantes de los libros, facilitando la exploración y adquisición de las obras más populares según el New York Times.
 
-## Uso de la app
+## Cómo utilizar el proyecto
 
 Página principal:
 ![Diagrama Entidad-Relación](/assets/readme/home.png)
