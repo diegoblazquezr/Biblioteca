@@ -13,7 +13,7 @@ Esta aplicación web permite a los usuarios explorar los best sellers del New Yo
 
 * **Creación de Usuario:** Los usuarios pueden registrarse para crear una cuenta.
 
-* **Guardado de Libro en Favoritos:** Los usuarios registrados
+* **Guardado de Libro en Favoritos:** Cada libro contiene un botón de favoritos para que los usuarios registrados puedan guardar los best sellers que más les haya gustado.
 
 * **Gestión de Perfil:** Los usuarios registrados pueden cambiar su foto de perfil.
 
