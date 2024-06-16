@@ -14,10 +14,10 @@
     font-family: Araboto;
 }
 
-body,
+/* body,
 html {
     height: 100%;
-}
+} */
 
 body {
     min-height: 100vh;
@@ -40,28 +40,23 @@ button:hover {
 
 main,
 header {
-    /* color: rgb(78, 78, 78); */
     color: black;
 }
 
 header {
-    height: 100px;
-    /* width: 100%; */
-    margin: 20px 40px 20px 40px;
+    height: fit-content;
+    margin: 20px 40px 0px 40px;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    /* display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 0.5fr)); */
+    flex-wrap: wrap;
+    /* justify-content: space-around; */
 }
 
 #nytContainer {
-    height: 100%;
-    margin: auto;
+    width: fit-content;
 }
 
 #nytContainer img {
-    height: 100%;
+    width: 400px;
 }
 
 /* header hr {
@@ -94,9 +89,11 @@ header {
     line-height: 65px;
 } */
 
-/* #userNavContainer {
+#userNavContainer {
+    height: fit-content;
+    width: fit-content;
     margin-left: auto;
-} */
+}
 
 #loggedInContainer button{
     padding: 5px 10px 7px 10px;
@@ -107,8 +104,8 @@ header {
 }
 
 #labelPfp {
-    width: 50px;
-    height: 50px;
+    display: block;
+    width: fit-content;
 }
 
 #labelPfp:hover {
@@ -210,14 +207,26 @@ input[type=submit]:hover {
 }
 
 #filters-all-lists-container {
-    margin: 20px 40px 20px 40px;
-    /* display: flex;
-    align-items: center;
-    justify-content: center; */
+    margin: 10px 40px 20px 40px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
 }
 
-#filters-all-lists-container select option {
-    padding: 2px;
+#filters-all-lists-container select {
+    padding: 5px 10px 7px 10px;
+    margin: 0 10px 0 10px;
+}
+
+#filters-all-lists-container input {
+    padding: 5px 10px 7px 10px;
+    margin: 0 10px 0 10px;
+}
+
+#filters-all-lists-container label{
+    display: block;
+    margin: 10px 0 0 0;
 }
 
 #all-lists-container {
@@ -273,7 +282,7 @@ input[type=submit]:hover {
 }
 
 #back-button-all-books-container {
-    margin: 0px 40px 0px 40px;
+    margin: 10px 40px 0px 40px;
 }
 
 #back-button-all-books-container button {
@@ -304,8 +313,9 @@ input[type=submit]:hover {
     box-shadow: 0 0 3px lightgray;
     padding: 15px;
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    /* align-content: flex-start; */
 }
 
 #all-books-container h4 {
@@ -352,6 +362,7 @@ input[type=submit]:hover {
 
 .btnFavorite {
     padding: 5px 10px 7px 10px;
+    height: fit-content;
     width: fit-content;
     margin-top: 15px;
 }
@@ -365,9 +376,10 @@ input[type=submit]:hover {
 
 .btnFavoriteActive {
     padding: 5px 10px 7px 10px;
+    height: fit-content;
     width: fit-content;
-    background-color: rgb(246, 46, 46);
     margin-top: 15px;
+    background-color: rgb(246, 46, 46);
 }
 
 .btnFavoriteActive:hover {
@@ -431,42 +443,55 @@ footer #name {
     pointer-events: none;
 }
 
-@media only screen and (min-width: 320px) and (max-width: 480px) {
+@media only screen and (min-width: 320px) and (max-width: 481px) {
     #all-lists-container {
         grid-template-columns: repeat(1, 1fr);
     }
-
     #all-books-container {
         grid-template-columns: repeat(1, 1fr);
     }
+    #userNavContainer {
+        margin-top: 20px;
+    }
+    #login-container,
+    #signup-container {
+        width: 60%;
+    }
+    #nytContainer img {
+        width: 300px;
+    }
 }
 
-@media screen and (min-width: 481px) and (max-width: 767px) {
+@media screen and (min-width: 481px) and (max-width: 768px) {
     #all-lists-container {
         grid-template-columns: repeat(2, 1fr);
     }
-
     #all-books-container {
         grid-template-columns: repeat(2, 1fr);
     }
+    #login-container,
+    #signup-container {
+        width: 60%;
+    }
+    #nytContainer img {
+        width: 300px;
+    }
 }
 
-@media screen and (min-width: 768px) and (max-width: 991px) {
+@media screen and (min-width: 768px) and (max-width: 992px) {
     #all-lists-container {
         grid-template-columns: repeat(3, 1fr);
     }
-
     #all-books-container {
         grid-template-columns: repeat(3, 1fr);
     }
 }
 
 
-@media screen and (min-width: 992px) and (max-width: 1199px) {
+@media screen and (min-width: 992px) and (max-width: 1200px) {
     #all-lists-container {
         grid-template-columns: repeat(4, 1fr);
     }
-
     #all-books-container {
         grid-template-columns: repeat(4, 1fr);
     }
@@ -476,7 +501,6 @@ footer #name {
     #all-lists-container {
         grid-template-columns: repeat(5, 1fr);
     }
-
     #all-books-container {
         grid-template-columns: repeat(5, 1fr);
     }
@@ -501,7 +525,6 @@ footer #name {
     0% {
         transform: rotate(0deg);
     }
-
     100% {
         transform: rotate(360deg);
     }

@@ -14,7 +14,7 @@
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#000000">
 
-    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="./styles.css">
 
 </head>
 
@@ -43,14 +43,14 @@
                 <button id="button-logout">Logout</button>
             </article>
         </section>
-        <hr>
+        <!--     -->
     </header>
 
     <main>
         <span class="loader hide"></span>
 
         <section id="auth-container">
-            <article id="login-container">
+            <article id="login-container" class="hide">
                 <button class="close-auth-window"><i class="fa-solid fa-xmark" style="color: #000000;"></i></button>
                 <form id="formLogin" action="#" method="POST">
                     <label for="emailLogin">Email:</label>
@@ -60,7 +60,7 @@
                     <input type="submit" value="Login">
                 </form>
             </article>
-            <article id="signup-container">
+            <article id="signup-container" class="hide">
                 <button class="close-auth-window"><i class="fa-solid fa-xmark" style="color: #000000;"></i></button>
                 <form id="formSignup" action="#" method="POST">
                     <label for="nameSignup">Name:</label>
@@ -144,7 +144,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-storage.js"></script>
-    <script src="../js/scripts.js"></script>
+    <script src="./scripts.js"></script>
 </body>
 
 </html>

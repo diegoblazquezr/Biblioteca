@@ -454,6 +454,7 @@ const signInUser = (email, password) => {
             let errorMessage = error.message;
             console.log(errorCode)
             console.log(errorMessage)
+            alert('Wrong authentication details.');
         });
     authContainer.classList.remove('show');
 }
