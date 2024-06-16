@@ -61,14 +61,17 @@ Inicio de Sesión
 
 Guardado de Libro en Favoritos
 1) Para poder empezar a guardar favoritos necesitaras iniciar sesión en tu cuenta.
-2) Una vez dentro, en la lista de libros, haz clic en el ícono de corazón junto al libro que deseas guardar como favorito.
+2) Una vez dentro, en la lista de libros, haz clic en el icono de corazón junto al libro que deseas guardar como favorito.
 ![sc9](./assets/readme/sc9.png)
 3) Accede a la sección de "Favoritos" en tu perfil para ver todos los libros guardados.
+![sc10](./assets/readme/sc10.png)
 
 Gestión de Perfil
 1) Inicia sesión en tu cuenta y en la esquina superior derecha.
 2) Haz clic en "Editar Perfil".
-3) Actualiza tu foto de perfil y cualquier otra información personal, luego guarda los cambios.
+![sc11](./assets/readme/sc11.png)
+4) Actualiza tu foto de perfil y cualquier otra información personal, luego guarda los cambios.
+![sc12](./assets/readme/sc12.png)
 
 ## Tecnologías usadas
 
