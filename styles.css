@@ -58,13 +58,10 @@ header {
 #nytContainer {
     height: 100%;
     margin: auto;
-    /* display: flex;
-    justify-content: center; */
 }
 
 #nytContainer img {
     height: 100%;
-    /* margin: auto; */
 }
 
 /* header hr {

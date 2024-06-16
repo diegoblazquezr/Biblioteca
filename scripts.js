@@ -72,7 +72,9 @@ document.addEventListener('click', ({ target }) => {
         sectionAllListsContainer.classList.remove('hide');
         paginationContainer.classList.add('hide');
         // authContainer.classList.remove('hide');
-        readAllFavoriteBooks();
+        if (isUserLogged) {
+            readAllFavoriteBooks();
+        }
         getAllLists();
     }
 
@@ -83,7 +85,9 @@ document.addEventListener('click', ({ target }) => {
         paginationContainer.innerHTML = '';
         // getAllBooks(genre);
         const arrAllBooksSliced = paginateBooks();
-        readAllFavoriteBooks();
+        if (isUserLogged) {
+            readAllFavoriteBooks();
+        }
         paintAllBooks(arrAllBooksSliced, dataAllBooks);
     }
 
@@ -94,7 +98,9 @@ document.addEventListener('click', ({ target }) => {
         paginationContainer.innerHTML = '';
         // getAllBooks(genre);
         const arrAllBooksSliced = paginateBooks();
-        readAllFavoriteBooks();
+        if (isUserLogged) {
+            readAllFavoriteBooks();
+        }
         paintAllBooks(arrAllBooksSliced, dataAllBooks);
     }
 
@@ -194,6 +200,7 @@ document.getElementById("formSignup").addEventListener("submit", function (event
 
 document.getElementById("button-logout").addEventListener("click", () => {
     signOut();
+    getAllLists();
 });
 
 // Categories Filters
@@ -280,9 +287,23 @@ const paginateBooks = () => {
     return arrAllBooksSliced;
 }
 
+const combineAllBooksFilters = () => {
+    let combinedResults = arrAllLists;
+
+    // if (arrFilteredByUpdate.length > 0) {
+    //     combinedResults = combinedResults.filter(obj => arrFilteredByUpdate.includes(obj));
+    // }
+    paintAllBooks(combinedResults);
+}
+
 // All Lists
 const getAllLists = async () => {
+    sectionAllListsContainer.classList.remove('hide');
     filtersAllListsContainer.classList.remove('hide');
+    sectionAllBooksContainer.classList.add('hide');
+    h3AllBooks.classList.add('hide');
+    backButtonAllBooksContainer.classList.add('hide');
+    paginationContainer.classList.add('hide');
     currentPage = 1; // Resets page pagination if back button or refreshed
     try {
         loader.classList.remove('hide');
@@ -319,7 +340,7 @@ const paintAllLists = (arrAllLists) => {
     loader.classList.add('hide');
 }
 
-//All Books
+// All Books
 const getAllBooks = async (genre) => {
     filtersAllListsContainer.classList.add('hide');
     try {
@@ -327,11 +348,6 @@ const getAllBooks = async (genre) => {
         const responseAllBooks = await fetch(`https://api.nytimes.com/svc/books/v3/lists/current/${genre}.json?api-key=CmHFGOrHUTetIVGxsAImRJXCHxEhTajD`);
         dataAllBooks = await responseAllBooks.json();
         arrAllBooks = dataAllBooks.results.books;
-
-        // const start = (currentPage - 1) * amountPerPage;
-        // const end = start + amountPerPage;
-        // const arrAllBooksSliced = arrAllBooks.slice(start, end);
-        // amountOfPages = Math.ceil(arrAllBooks.length / amountPerPage);
 
         const arrAllBooksSliced = paginateBooks();
 
