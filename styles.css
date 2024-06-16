@@ -5,7 +5,7 @@
 
 @font-face {
     font-family: Araboto;
-    src: url(./assets/fonts/araboto/araboto\ light\ 400.ttf);
+    src: url(./assets/fonts/araboto/araboto\light\400.ttf);
 }
 
 * {
@@ -210,7 +210,7 @@ input[type=submit]:hover {
     margin: 10px 40px 20px 40px;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: center;
 
 }
 
